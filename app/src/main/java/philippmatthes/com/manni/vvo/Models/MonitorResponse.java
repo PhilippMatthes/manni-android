@@ -1,4 +1,4 @@
-package main.Models;
+package philippmatthes.com.manni.vvo.Models;
 
 import java.util.Date;
 import java.util.List;

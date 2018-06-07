@@ -1,4 +1,4 @@
-package main;
+package philippmatthes.com.manni.vvo;
 
 public enum DVBError {
     network,

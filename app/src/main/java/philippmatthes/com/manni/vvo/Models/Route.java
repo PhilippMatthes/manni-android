@@ -1,6 +1,9 @@
-package main.Models;
+package philippmatthes.com.manni.vvo.Models;
 
 import main.Tools.ISO8601;
+import philippmatthes.com.manni.vvo.Connection;
+import philippmatthes.com.manni.vvo.DVBError;
+import philippmatthes.com.manni.vvo.WGSCoordinate;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package main.Models;
+package philippmatthes.com.manni.vvo.Models;
 
 public class Diva {
     private String number;

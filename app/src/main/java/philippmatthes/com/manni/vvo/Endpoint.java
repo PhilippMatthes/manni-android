@@ -1,4 +1,4 @@
-package main;
+package philippmatthes.com.manni.vvo;
 
 public class Endpoint {
     public static final String base = "https://webapi.vvo-online.de/";

@@ -1,4 +1,4 @@
-package main.Models;
+package philippmatthes.com.manni.vvo.Models;
 
 import main.Tools.ISO8601;
 import main.Tools.Time;

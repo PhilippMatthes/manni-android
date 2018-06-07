@@ -1,9 +1,12 @@
-package main.Models;
+package philippmatthes.com.manni.vvo.Models;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import philippmatthes.com.manni.vvo.Connection;
+import philippmatthes.com.manni.vvo.Tools.SAP;
 
 public class TripStop implements Comparable<TripStop> {
 

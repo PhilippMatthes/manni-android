@@ -1,9 +1,13 @@
-package main.Models;
+package philippmatthes.com.manni.vvo.Models;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import philippmatthes.com.manni.vvo.Connection;
+import philippmatthes.com.manni.vvo.GKCoordinate;
 
 public class POI {
     private String descriptionString;

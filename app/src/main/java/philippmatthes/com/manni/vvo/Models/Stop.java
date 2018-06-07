@@ -1,6 +1,9 @@
-package main.Models;
+package philippmatthes.com.manni.vvo.Models;
 
 import java.util.*;
+
+import philippmatthes.com.manni.vvo.GKCoordinate;
+import philippmatthes.com.manni.vvo.WGSCoordinate;
 
 public class Stop implements Comparable<Stop> {
 
@@ -55,7 +58,7 @@ public class Stop implements Comparable<Stop> {
         Map<String, Object> data = new HashMap<>();
         data.put("limit", 10);
         data.put("assignedStops", true);
-        data.put("query", "coord:" + (int) gkCoordinate.get().getX() + ":" + (int) gkCoordinate.get().getY());
+        data.put("query", "coord:" + gkCoordinate.get().getX().intValue() + ":" + gkCoordinate.get().getY().intValue());
         return Connection.post(Endpoint.pointfinder, data);
     }
 

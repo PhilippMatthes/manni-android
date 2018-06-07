@@ -1,7 +1,5 @@
-package main;
+package philippmatthes.com.manni.vvo;
 
-import com.google.gson.Gson;
-import main.Models.FindResponse;
 
 public class Connection {
 
