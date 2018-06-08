@@ -1,24 +1,15 @@
 package philippmatthes.com.manni.vvo.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
-public class TripsResponse {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-    private final TripStop[] tripStops;
-    private final Date expirationTime;
-
-    public TripsResponse(TripStop[] tripStops, Date expirationTime) {
-
-        this.tripStops = tripStops;
-        this.expirationTime = expirationTime;
-    }
-
-    public TripStop[] getTripStops() {
-        return tripStops;
-    }
-
-    public Date getExpirationTime() {
-        return expirationTime;
-    }
-
+@AllArgsConstructor
+public class TripsResponse implements Response {
+    @SerializedName("Stops") @Getter @Setter private TripStop[] tripStops;
+    @SerializedName("ExpirationTime") @Getter @Setter private Date expirationTime;
 }

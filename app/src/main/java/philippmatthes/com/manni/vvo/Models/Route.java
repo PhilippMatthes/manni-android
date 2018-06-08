@@ -1,272 +1,81 @@
 package philippmatthes.com.manni.vvo.Models;
 
-import main.Tools.ISO8601;
+import android.support.annotation.NonNull;
+
+
+import com.android.volley.Response;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import philippmatthes.com.manni.vvo.Connection;
 import philippmatthes.com.manni.vvo.DVBError;
+import philippmatthes.com.manni.vvo.Endpoint;
+import philippmatthes.com.manni.vvo.Result;
+import philippmatthes.com.manni.vvo.Tools.ISO8601;
 import philippmatthes.com.manni.vvo.WGSCoordinate;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Route implements Comparable {
-    private Optional<Integer> priceLevel;
-    private Optional<String> price;
-    private Integer duration;
-    private Integer interchanges;
-    private ModeElement[] modeChain;
-    private Optional<Integer> fareZoneOrigin;
-    private Optional<Integer> fareZoneDestination;
-    private String mapPdfId;
-    private Integer routeId;
-    private RoutePartial[] partialRoutes;
-    private MapData[] mapData;
+@AllArgsConstructor
+public class Route implements Comparable<Route> {
+    @SerializedName("PriceLevel") @Getter @Setter private Optional<Integer> priceLevel;
+    @SerializedName("Price") @Getter @Setter private Optional<String> price;
+    @SerializedName("Duration") @Getter @Setter private Integer duration;
+    @SerializedName("Interchanges") @Getter @Setter private Integer interchanges;
+    @SerializedName("MotChain") @Getter @Setter private List<ModeElement> modeChain;
+    @SerializedName("FareZoneOrigin") @Getter @Setter private Optional<Integer> fareZoneOrigin;
+    @SerializedName("FareZoneDestination") @Getter @Setter private Optional<Integer> fareZoneDestination;
+    @SerializedName("MapPdfId") @Getter @Setter private String mapPdfId;
+    @SerializedName("RouteId") @Getter @Setter private Integer routeId;
+    @SerializedName("PartialRoutes") @Getter @Setter private List<RoutePartial> partialRoutes;
+    @SerializedName("MapData") @Getter @Setter private MapData[] mapData;
 
-    public Route(
-        Optional<Integer> priceLevel,
-        Optional<String> price,
-        Integer duration,
-        Integer interchanges,
-        ModeElement[] modeChain,
-        Optional<Integer> fareZoneOrigin,
-        Optional<Integer> fareZoneDestination,
-        String mapPdfId, Integer routeId,
-        RoutePartial[] partialRoutes,
-        MapData[] mapData
-    ) {
-        this.priceLevel = priceLevel;
-        this.price = price;
-        this.duration = duration;
-        this.interchanges = interchanges;
-        this.modeChain = modeChain;
-        this.fareZoneOrigin = fareZoneOrigin;
-        this.fareZoneDestination = fareZoneDestination;
-        this.mapPdfId = mapPdfId;
-        this.routeId = routeId;
-        this.partialRoutes = partialRoutes;
-        this.mapData = mapData;
+    @Override
+    public int compareTo(@NonNull Route o) {
+        return o.getRouteId().compareTo(routeId);
     }
 
-    public Optional<Integer> getPriceLevel() {
-        return priceLevel;
-    }
-
-    public Optional<String> getPrice() {
-        return price;
-    }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public Integer getInterchanges() {
-        return interchanges;
-    }
-
-    public ModeElement[] getModeChain() {
-        return modeChain;
-    }
-
-    public Optional<Integer> getFareZoneOrigin() {
-        return fareZoneOrigin;
-    }
-
-    public Optional<Integer> getFareZoneDestination() {
-        return fareZoneDestination;
-    }
-
-    public String getMapPdfId() {
-        return mapPdfId;
-    }
-
-    public Integer getRouteId() {
-        return routeId;
-    }
-
-    public RoutePartial[] getPartialRoutes() {
-        return partialRoutes;
-    }
-
-    public MapData[] getMapData() {
-        return mapData;
-    }
-
+    @AllArgsConstructor
     public class ModeElement {
-        private Optional<String> name;
-        private Optional<Mode> mode;
-        private Optional<String> direction;
-        private Optional<String[]> changes;
-        private Optional<Diva> diva;
-
-        public ModeElement(
-            Optional<String> name,
-            Optional<Mode> mode,
-            Optional<String> direction,
-            Optional<String[]> changes,
-            Optional<Diva> diva
-        ) {
-            this.name = name;
-            this.mode = mode;
-            this.direction = direction;
-            this.changes = changes;
-            this.diva = diva;
-        }
-
-        public Optional<String> getName() {
-            return name;
-        }
-
-        public Optional<Mode> getMode() {
-            return mode;
-        }
-
-        public Optional<String> getDirection() {
-            return direction;
-        }
-
-        public Optional<String[]> getChanges() {
-            return changes;
-        }
-
-        public Optional<Diva> getDiva() {
-            return diva;
-        }
+        @SerializedName("Name") @Getter @Setter private Optional<String> name;
+        @SerializedName("Type") @Getter @Setter private Optional<Mode> mode;
+        @SerializedName("Direction") @Getter @Setter private Optional<String> direction;
+        @SerializedName("Changes") @Getter @Setter private Optional<List<String>> changes;
+        @SerializedName("Diva") @Getter @Setter private Optional<Diva> diva;
     }
 
+    @AllArgsConstructor
     public class RoutePartial {
-        private Optional<Integer> partialRouteId;
-        private Optional<Integer> duration;
-        private ModeElement mode;
-        private Integer mapDataIndex;
-        private String shift;
-        private Optional<RouteStop[]> regularStops;
-
-        public RoutePartial(
-            Optional<Integer> partialRouteId,
-            Optional<Integer> duration,
-            ModeElement mode,
-            Integer mapDataIndex,
-            String shift,
-            Optional<RouteStop[]> regularStops
-        ) {
-            this.partialRouteId = partialRouteId;
-            this.duration = duration;
-            this.mode = mode;
-            this.mapDataIndex = mapDataIndex;
-            this.shift = shift;
-            this.regularStops = regularStops;
-        }
-
-        public Optional<Integer> getPartialRouteId() {
-            return partialRouteId;
-        }
-
-        public Optional<Integer> getDuration() {
-            return duration;
-        }
-
-        public ModeElement getMode() {
-            return mode;
-        }
-
-        public Integer getMapDataIndex() {
-            return mapDataIndex;
-        }
-
-        public String getShift() {
-            return shift;
-        }
-
-        public Optional<RouteStop[]> getRegularStops() {
-            return regularStops;
-        }
+        @SerializedName("PartialRouteId") @Getter @Setter private Optional<Integer> partialRouteId;
+        @SerializedName("Duration") @Getter @Setter private Optional<Integer> duration;
+        @SerializedName("Mot") @Getter @Setter private ModeElement mode;
+        @SerializedName("MapDataIndex") @Getter @Setter private Integer mapDataIndex;
+        @SerializedName("Shift") @Getter @Setter private String shift;
+        @SerializedName("RegularStops") @Getter @Setter private Optional<List<RouteStop>> regularStops;
     }
 
+    @AllArgsConstructor
     public class RouteStop {
-        private Date arrivalTime;
-        private Date departureTime;
-        private String place;
-        private String name;
-        private String type;
-        private String dataId;
-        private Optional<Platform> platform;
-        private Optional<WGSCoordinate> coordinate;
-        private Optional<String> mapPdfId;
-
-        public RouteStop(
-            Date arrivalTime,
-            Date departureTime,
-            String place,
-            String name,
-            String type,
-            String dataId,
-            Optional<Platform> platform,
-            Optional<WGSCoordinate> coordinate,
-            Optional<String> mapPdfId
-        ) {
-            this.arrivalTime = arrivalTime;
-            this.departureTime = departureTime;
-            this.place = place;
-            this.name = name;
-            this.type = type;
-            this.dataId = dataId;
-            this.platform = platform;
-            this.coordinate = coordinate;
-            this.mapPdfId = mapPdfId;
-        }
-
-        public Date getArrivalTime() {
-            return arrivalTime;
-        }
-
-        public Date getDepartureTime() {
-            return departureTime;
-        }
-
-        public String getPlace() {
-            return place;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public String getDataId() {
-            return dataId;
-        }
-
-        public Optional<Platform> getPlatform() {
-            return platform;
-        }
-
-        public Optional<WGSCoordinate> getCoordinate() {
-            return coordinate;
-        }
-
-        public Optional<String> getMapPdfId() {
-            return mapPdfId;
-        }
+        @SerializedName("ArrivalTime") @Getter @Setter private Date arrivalTime;
+        @SerializedName("DepartureTime") @Getter @Setter private Date departureTime;
+        @SerializedName("Place") @Getter @Setter private String place;
+        @SerializedName("Name") @Getter @Setter private String name;
+        @SerializedName("Type") @Getter @Setter private String type;
+        @SerializedName("DataId") @Getter @Setter private String dataId;
+        @SerializedName("Platform") @Getter @Setter private Optional<Platform> platform;
+        @SerializedName("Latitude") @Getter @Setter private Optional<Double> wgsLatitude;
+        @SerializedName("Longitude") @Getter @Setter private Optional<Double> wgsLongitude;
+        @SerializedName("MapPdfId") @Getter @Setter private Optional<String> mapPdfId;
     }
 
+    @AllArgsConstructor
     public class MapData {
-        private String mode;
-        private WGSCoordinate[] points;
-
-        public MapData(String mode, WGSCoordinate[] points) {
-            this.mode = mode;
-            this.points = points;
-        }
-
-        public String getMode() {
-            return mode;
-        }
-
-        public WGSCoordinate[] getPoints() {
-            return points;
-        }
+        @Getter @Setter private String mode;
+        // TODO: WGSCoordinate Handling
     }
 
     @Override
@@ -274,98 +83,108 @@ public class Route implements Comparable {
         return routeId.hashCode();
     }
 
-    @Override
-    public int compareTo(Object o) {
-        if (!(o instanceof Route)) {
-            return 0;
-        } else {
-            return ((Route) o).getRouteId().compareTo(routeId);
-        }
-    }
-
-    public static Result<RoutesResponse> find(
+    public static void find(
             String originId,
             String destinationId,
             Date time,
             Boolean dateIsArrival,
-            Boolean allowShortTermChanges
+            Boolean allowShortTermChanges,
+            Response.Listener<Result<RoutesResponse>> listener
     ) {
-        Map<String, Object> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>();
         data.put("origin", originId);
         data.put("destination", destinationId);
         data.put("time", ISO8601.fromDate(time));
-        data.put("isarrivaltime", dateIsArrival);
-        data.put("shorttermchanges", allowShortTermChanges);
+        data.put("isarrivaltime", dateIsArrival.toString());
+        data.put("shorttermchanges", allowShortTermChanges.toString());
         data.put("mobilitySettings", "None");
-        data.put("includeAlternativeStops", true);
-        Map<String, Object> standardSettings = new HashMap<>();
+        data.put("includeAlternativeStops", "true");
+        Map<String, String> standardSettings = new HashMap<>();
         standardSettings.put("maxChanges", "Unlimited");
         standardSettings.put("walkingSpeed", "Normal");
-        standardSettings.put("footpathToStop", 5);
+        standardSettings.put("footpathToStop", "5");
         List<String> modeIdentifiers = Mode.getAll().stream().map(Mode::getRawValue).collect(Collectors.toList());
-        standardSettings.put("mot", modeIdentifiers);
-        Connection.post(Endpoint.route, data);
+        standardSettings.put("mot", new Gson().toJson(modeIdentifiers));
+        data.put("standardSettings", new Gson().toJson(standardSettings));
+        Connection.post(Endpoint.route, data, listener);
     }
 
-    public static Result<RoutesResponse> find(
+    public static void find(
             String originId,
-            String destinationId
+            String destinationId,
+            Response.Listener<Result<RoutesResponse>> listener
     ) {
-        return find(
+        find(
                 originId,
                 destinationId,
                 new Date(),
                 false,
-                true
+                true,
+                listener
         );
     }
 
-    public static Result<RoutesResponse> findByName(
+    public static void findByName(
             String origin,
             String destination,
             Date time,
             Boolean dateIsArrival,
-            Boolean allowShortTermChanges
+            Boolean allowShortTermChanges,
+            Response.Listener<Result<RoutesResponse>> listener
     ) {
 
-        Result<FindResponse> originResult = Stop.find(origin);
-        if (!originResult.isSuccessful()) {
-            return new Result<RoutesResponse>(originResult.getError());
-        }
-        FindResponse originResponse = originResult.getResponse();
-        if (originResponse.getStops().length == 0) {
-            return new Result<RoutesResponse>(DVBError.getResponse());
-        }
-        String originId = originResponse.getStops()[0].getId();
+        Stop.find(origin,
+            originResponse -> {
+                if (!originResponse.getResponse().isPresent()) {
+                    listener.onResponse(new Result<>(Optional.empty(), originResponse.getError()));
+                    return;
+                }
+                FindResponse originFindResponse = originResponse.getResponse().get();
+                if (originFindResponse.getStops().size() == 0) {
+                    listener.onResponse(new Result<>(Optional.empty(), Optional.of(DVBError.response)));
+                    return;
+                }
+                String originId = originFindResponse.getStops().get(0).getId();
 
-        Result<FindResponse> destinationResult = Stop.find(origin);
-        if (!destinationResult.isSuccessful()) {
-            return new Result<RoutesResponse>(destinationResult.getError());
-        }
-        FindResponse destinationResponse = destinationResult.getResponse();
-        if (destinationResponse.getStops().length == 0) {
-            return new Result<RoutesResponse>(DVBError.getResponse());
-        }
-        String destinationId = destinationResponse.getStops()[0].getId();
-        return find(
-                originId,
-                destinationId,
-                time,
-                dateIsArrival,
-                allowShortTermChanges
+                Stop.find(destination,
+                    destinationResponse -> {
+                        if (!destinationResponse.getResponse().isPresent()) {
+                            listener.onResponse(new Result<>(Optional.empty(), destinationResponse.getError()));
+                            return;
+                        }
+                        FindResponse destinationFindResponse = destinationResponse.getResponse().get();
+                        if (destinationFindResponse.getStops().size() == 0) {
+                            listener.onResponse(new Result<>(Optional.empty(), Optional.of(DVBError.response)));
+                            return;
+                        }
+                        String destinationId = destinationFindResponse.getStops().get(0).getId();
+
+                        find(
+                                originId,
+                                destinationId,
+                                time,
+                                dateIsArrival,
+                                allowShortTermChanges,
+                                listener
+                        );
+                    }
+                );
+            }
         );
     }
 
-    public static Result<RoutesResponse> findByName(
+    public static void findByName(
             String origin,
-            String destination
+            String destination,
+            Response.Listener<Result<RoutesResponse>> listener
     ) {
-        return findByName(
+        findByName(
                 origin,
                 destination,
                 new Date(),
                 false,
-                true
+                true,
+                listener
         );
     }
 

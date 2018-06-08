@@ -1,54 +1,30 @@
 package philippmatthes.com.manni.vvo.Models;
 
+import com.android.volley.Response;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import philippmatthes.com.manni.vvo.Connection;
+import philippmatthes.com.manni.vvo.Endpoint;
+import philippmatthes.com.manni.vvo.Result;
 import philippmatthes.com.manni.vvo.Tools.SAP;
 
+@AllArgsConstructor
 public class TripStop implements Comparable<TripStop> {
 
-    private String id;
-    private String place;
-    private String name;
-    private Position position;
-    private Optional<Platform> platform;
-    private Date time;
-
-    public TripStop(String id, String place, String name, Position position, Optional<Platform> platform, Date time) {
-        this.id = id;
-        this.place = place;
-        this.name = name;
-        this.position = position;
-        this.platform = platform;
-        this.time = time;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Position getPosition() {
-        return position;
-    }
-
-    public Optional<Platform> getPlatform() {
-        return platform;
-    }
-
-    public Date getTime() {
-        return time;
-    }
+    @SerializedName("Id") @Getter @Setter private String id;
+    @SerializedName("Place") @Getter @Setter private String place;
+    @SerializedName("Name") @Getter @Setter private String name;
+    @SerializedName("Position") @Getter @Setter private Position position;
+    @SerializedName("Platform") @Getter @Setter private Optional<Platform> platform;
+    @SerializedName("Time") @Getter @Setter private Date time;
 
     @Override
     public int compareTo(TripStop o) {
@@ -56,9 +32,9 @@ public class TripStop implements Comparable<TripStop> {
     }
 
     public enum Position {
-        Previous("Previous"),
-        Current("Current"),
-        Next("Next");
+        @SerializedName("Previous") Previous("Previous"),
+        @SerializedName("Current") Current("Current"),
+        @SerializedName("Next") Next("Next");
 
         private final String rawValue;
 
@@ -66,21 +42,22 @@ public class TripStop implements Comparable<TripStop> {
             rawValue = s;
         }
 
-        public String getRawValue() {
+        public String getValue() {
             return rawValue;
         }
     }
 
-    public static Result<TripsResponse> get(
+    public static void getById(
             String tripId,
             String stopId,
-            Date time
+            Date time,
+            Response.Listener<Result<TripsResponse>> listener
     ) {
-        Map<String, Object> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>();
         data.put("tripid", tripId);
         data.put("stopid", stopId);
         data.put("time", SAP.fromDate(time));
-        return Connection.post(Endpoint.trip, data);
+        Connection.post(Endpoint.trip, data, listener);
     }
 
     @Override

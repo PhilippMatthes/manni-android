@@ -2,23 +2,16 @@ package philippmatthes.com.manni.vvo;
 
 import java.util.Optional;
 
-public class WGSCoordinate implements Coordinate {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import philippmatthes.com.manni.vvo.Models.Coordinate;
 
-    private Double latitude;
-    private Double longitude;
+@AllArgsConstructor
+public class WGSCoordinate extends Coordinate {
 
-    public WGSCoordinate(Double latitude, Double longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
+    @Getter @Setter private Double latitude;
+    @Getter @Setter private Double longitude;
 
     @Override
     public Optional<GKCoordinate> asGK() {

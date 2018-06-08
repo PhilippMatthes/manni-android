@@ -1,19 +1,13 @@
 package philippmatthes.com.manni.vvo.Models;
 
-public class RoutesResponse {
-    private Route[] routes;
-    private String sessionId;
+import com.google.gson.annotations.SerializedName;
 
-    public RoutesResponse(Route[] routes, String sessionId) {
-        this.routes = routes;
-        this.sessionId = sessionId;
-    }
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-    public Route[] getRoutes() {
-        return routes;
-    }
-
-    public String getSessionId() {
-        return sessionId;
-    }
+@AllArgsConstructor
+public class RoutesResponse implements Response {
+    @SerializedName("Routes") @Getter @Setter private Route[] routes;
+    @SerializedName("SessionId") @Getter @Setter private String sessionId;
 }

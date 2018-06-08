@@ -1,39 +1,18 @@
 package philippmatthes.com.manni.vvo.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 import java.util.List;
 
-public class MonitorResponse {
-    private final String stopName;
-    private final String place;
-    private final Date expirationTime;
-    private final List<Departure> departures;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-    public MonitorResponse(
-            String stopName,
-            String place,
-            Date expirationTime,
-            List<Departure> departures
-    ) {
-        this.stopName = stopName;
-        this.place = place;
-        this.expirationTime = expirationTime;
-        this.departures = departures;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public String getStopName() {
-        return stopName;
-    }
-
-    public Date getExpirationTime() {
-        return expirationTime;
-    }
-
-    public List<Departure> getDepartures() {
-        return departures;
-    }
+@AllArgsConstructor
+public class MonitorResponse implements Response {
+    @Getter @Setter @SerializedName("Name") private String stopName;
+    @Getter @Setter @SerializedName("Place") private String place;
+    @Getter @Setter @SerializedName("ExpirationTime") private Date expirationTime;
+    @Getter @Setter @SerializedName("Departures") private List<Departure> departures;
 }

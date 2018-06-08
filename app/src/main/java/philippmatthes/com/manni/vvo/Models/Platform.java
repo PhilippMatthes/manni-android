@@ -1,19 +1,13 @@
 package philippmatthes.com.manni.vvo.Models;
 
+import com.google.gson.annotations.SerializedName;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
 public class Platform {
-    private String name;
-    private String type;
-
-    public Platform(String name, String type) {
-        this.name = name;
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getType() {
-        return type;
-    }
+    @SerializedName("Name") @Getter @Setter private String name;
+    @SerializedName("Type") @Getter @Setter private String type;
 }

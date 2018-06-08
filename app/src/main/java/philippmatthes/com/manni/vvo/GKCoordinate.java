@@ -2,24 +2,16 @@ package philippmatthes.com.manni.vvo;
 
 import java.util.Optional;
 
-public class GKCoordinate implements Coordinate {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import philippmatthes.com.manni.vvo.Models.Coordinate;
 
-    private Double x;
-    private Double y;
+@AllArgsConstructor
+public class GKCoordinate extends Coordinate {
 
-    public GKCoordinate(Double x, Double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public Double getX() {
-        return x;
-    }
-
-    public Double getY() {
-        return y;
-    }
-
+    @Getter @Setter private Double x;
+    @Getter @Setter private Double y;
 
     @Override
     public Optional<GKCoordinate> asGK() {

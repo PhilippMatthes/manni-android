@@ -1,20 +1,13 @@
 package philippmatthes.com.manni.vvo.Models;
 
+import com.google.gson.annotations.SerializedName;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@AllArgsConstructor
 public class Diva {
-    private String number;
-    private String network;
-
-    public Diva(String number, String network) {
-        this.number = number;
-        this.network = network;
-    }
-
-    public String getNetwork() {
-        return network;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
+    @SerializedName("Number")@Getter @Setter private String number;
+    @SerializedName("Network")@Getter @Setter private String network;
 }

@@ -1,93 +1,37 @@
 package philippmatthes.com.manni.vvo.Models;
 
-import main.Tools.ISO8601;
-import main.Tools.Time;
+import com.android.volley.Response;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import philippmatthes.com.manni.vvo.Connection;
+import philippmatthes.com.manni.vvo.DVBError;
+import philippmatthes.com.manni.vvo.Endpoint;
+import philippmatthes.com.manni.vvo.Result;
+import philippmatthes.com.manni.vvo.Tools.ISO8601;
+import philippmatthes.com.manni.vvo.Tools.Time;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 public class Departure implements Comparable<Departure> {
-    private String id;
-    private String line;
-    private String direction;
-    private Optional<Platform> platform;
-    private Mode mode;
-    private Optional<Date> realTime;
-    private Date scheduledTime;
-    private Optional<State> state;
-    private Optional<List<String>> routeChanges;
-    private Optional<Diva> diva;
-
-    public Departure(
-        String id,
-        String line,
-        String direction,
-        Optional<Platform> platform,
-        Mode mode,
-        Optional<Date> realTime,
-        Date scheduledTime,
-        Optional<State> state,
-        Optional<List<String>> routeChanges,
-        Optional<Diva> diva
-    ) {
-        this.id = id;
-        this.line = line;
-        this.direction = direction;
-        this.platform = platform;
-        this.mode = mode;
-        this.realTime = realTime;
-        this.scheduledTime = scheduledTime;
-        this.state = state;
-        this.routeChanges = routeChanges;
-        this.diva = diva;
-    }
-
-    public Date getScheduledTime() {
-        return scheduledTime;
-    }
-
-    public Mode getMode() {
-        return mode;
-    }
-
-    public Optional<Date> getRealTime() {
-        return realTime;
-    }
-
-    public Optional<Diva> getDiva() {
-        return diva;
-    }
-
-    public Optional<List<String>> getRouteChanges() {
-        return routeChanges;
-    }
-
-    public Optional<Platform> getPlatform() {
-        return platform;
-    }
-
-    public Optional<State> getState() {
-        return state;
-    }
-
-    public String getDirection() {
-        return direction;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getLine() {
-        return line;
-    }
+    @Getter @Setter @SerializedName("Id") private String id;
+    @Getter @Setter @SerializedName("LineName") private String line;
+    @Getter @Setter @SerializedName("Direction") private String direction;
+    @Getter @Setter @SerializedName("Platform") private Optional<Platform> platform;
+    @Getter @Setter @SerializedName("Mot") private Mode mode;
+    @Getter @Setter @SerializedName("RealTime") private Optional<Date> realTime;
+    @Getter @Setter @SerializedName("ScheduledTime") private Date scheduledTime;
+    @Getter @Setter @SerializedName("State") private Optional<State> state;
+    @Getter @Setter @SerializedName("RouteChanges") private Optional<List<String>> routeChanges;
+    @Getter @Setter @SerializedName("Diva") private Optional<Diva> diva;
 
     public Integer getETA() {
-        if(!realTime.isPresent()) {
-            return getScheduledETA();
-        } else {
-            return Time.minutesUntil(realTime.get());
-        }
+        return realTime.isPresent() ? Time.minutesUntil(realTime.get()) : getScheduledETA();
     }
 
     public Integer getScheduledETA() {
@@ -116,9 +60,9 @@ public class Departure implements Comparable<Departure> {
     }
 
     public enum State {
-        onTime ("InTime"),
-        delayed ("Delayed"),
-        unknown ("Unknown");
+        @SerializedName("InTime") onTime ("InTime"),
+        @SerializedName("Delayed") delayed ("Delayed"),
+        @SerializedName("Unknown") unknown ("Unknown");
 
         private final String rawValue;
 
@@ -126,7 +70,7 @@ public class Departure implements Comparable<Departure> {
             rawValue = s;
         }
 
-        public String getRawValue() {
+        public String getValue() {
             return rawValue;
         }
 
@@ -143,52 +87,104 @@ public class Departure implements Comparable<Departure> {
         }
     }
 
+
     public enum DateType {
-        arrival,
-        departure;
+        @SerializedName("arrival") arrival ("arrival"),
+        @SerializedName("departure") departure ("departure");
+
+        private final String rawValue;
+
+        DateType(String s) { rawValue = s; }
+
+        public String getValue() {
+            return rawValue;
+        }
 
         public Boolean requestVal() {
             return this == arrival;
         }
     }
 
-    public static Result<MonitorResponse> monitor(
-         String stopWithId,
+    public static void monitor(
+         String stopId,
          Date date,
          DateType dateType,
          List<Mode> allowedModes,
-         boolean allowShorttermChanges
+         Boolean allowShorttermChanges,
+         Response.Listener<Result<MonitorResponse>> listener
     ) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("stopid", stopWithId);
+        Map<String, String> data = new HashMap<>();
+        data.put("stopid", stopId);
         data.put("time", ISO8601.fromDate(date));
-        data.put("isarrival", dateType.requestVal());
-        data.put("limit", 0);
-        data.put("shorttermchanges", allowShorttermChanges);
-        data.put("mot", allowedModes.stream().map(mode -> mode.getRawValue()).collect(Collectors.toList()));
-        return Connection.post(Endpoint.departureMonitor, data);
+        data.put("isarrival", dateType.requestVal().toString());
+        data.put("limit", "0");
+        data.put("shorttermchanges", allowShorttermChanges.toString());
+        data.put("mot", new Gson().toJson(
+                allowedModes.stream()
+                .map(mode -> mode.getRawValue())
+                .collect(Collectors.toList())
+        ));
+        Connection.post(Endpoint.departureMonitor, data, listener);
     }
 
-    public static Result<MonitorResponse> monitor(
-        String stopWithId
+    public static void monitor(
+        String stopWithId,
+        Response.Listener<Result<MonitorResponse>> listener
     ) {
-        return Departure.monitor(
+        Departure.monitor(
             stopWithId,
             new Date(),
             DateType.arrival,
-            Mode.allRequest,
-            true
+            Mode.getAll(),
+            true,
+                listener
         );
     }
 
-    public static Result<MonitorResponse> monitorByName(
-        String stopWithName,
+    public static void monitorByName(
+        String stopName,
         Date date,
         DateType dateType,
         List<Mode> allowedModes,
-        boolean allowShorttermChanges
+        Boolean allowShorttermChanges,
+        Response.Listener<Result<MonitorResponse>> listener
     ) {
-        // TODO
+        Stop.find(stopName,
+            response -> {
+                if (!response.getResponse().isPresent()) {
+                    listener.onResponse(new Result<>(Optional.empty(), response.getError()));
+                    return;
+                }
+                List<Stop> stops = response.getResponse().get().getStops();
+                if (stops.size() == 0) {
+                    listener.onResponse(new Result<>(Optional.empty(), Optional.of(DVBError.response)));
+                    return;
+                }
+                Stop firstStop = stops.get(0);
+                monitor(
+                        firstStop.getId(),
+                        date,
+                        dateType,
+                        allowedModes,
+                        allowShorttermChanges,
+                        listener
+                );
+            }
+        );
+    }
+
+    public static void monitorByName(
+            String stopName,
+            Response.Listener<Result<MonitorResponse>> listener
+    ) {
+        monitorByName(
+                stopName,
+                new Date(),
+                DateType.departure,
+                Mode.getAll(),
+                true,
+                listener
+        );
     }
 
     @Override

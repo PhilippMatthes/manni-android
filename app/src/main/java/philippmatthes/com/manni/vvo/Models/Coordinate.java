@@ -1,19 +1,15 @@
 package philippmatthes.com.manni.vvo.Models;
 
-public class Coordinate {
-    private double longitude;
-    private double latitude;
+import java.util.Optional;
 
-    public Coordinate(double longitude, double latitude) {
-        this.longitude = longitude;
-        this.latitude = latitude;
-    }
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import philippmatthes.com.manni.vvo.GKCoordinate;
+import philippmatthes.com.manni.vvo.WGSCoordinate;
 
-    public double getLatitude() {
-        return latitude;
-    }
 
-    public double getLongitude() {
-        return longitude;
-    }
+public abstract class Coordinate {
+    abstract public Optional<GKCoordinate> asGK();
+    abstract public Optional<WGSCoordinate> asWGS();
 }

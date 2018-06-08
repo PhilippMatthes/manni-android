@@ -1,22 +1,16 @@
 package philippmatthes.com.manni.vvo.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 import java.util.List;
 
-public class LinesResponse {
-    private List<Line> lines;
-    private Date expirationTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-    public LinesResponse(List<Line> lines, Date expirationTime) {
-        this.lines = lines;
-        this.expirationTime = expirationTime;
-    }
-
-    public Date getExpirationTime() {
-        return expirationTime;
-    }
-
-    public List<Line> getLines() {
-        return lines;
-    }
+@AllArgsConstructor
+public class LinesResponse implements Response {
+    @SerializedName("Lines") @Getter @Setter private List<Line> lines;
+    @SerializedName("ExpirationTime") @Getter @Setter private Date expirationTime;
 }
