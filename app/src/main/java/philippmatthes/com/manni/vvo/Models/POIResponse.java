@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
-public class POIResponse implements Response {
+public class POIResponse {
     @SerializedName("Pins") @Getter @Setter private List<POI> pins;
-    @SerializedName("ExpirationTime") @Getter @Setter private Date expirationTime;
+    @SerializedName("ExpirationTime") @Getter @Setter private String expirationTime;
 }

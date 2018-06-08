@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
-public class LinesResponse implements Response {
+public class LinesResponse {
     @SerializedName("Lines") @Getter @Setter private List<Line> lines;
-    @SerializedName("ExpirationTime") @Getter @Setter private Date expirationTime;
+    @SerializedName("ExpirationTime") @Getter @Setter private String expirationTime;
 }

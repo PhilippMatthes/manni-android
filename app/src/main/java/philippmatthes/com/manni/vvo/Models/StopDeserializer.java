@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Optional;
 
 import philippmatthes.com.manni.vvo.GKCoordinate;
@@ -16,20 +17,20 @@ public class StopDeserializer implements JsonDeserializer<Stop> {
     public Stop deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         String jsonString = json.getAsString();
         String[] components = jsonString.split("\\|");
-        if (components.length != 9) {
-            throw new JsonParseException("Illegal number of parameters for a Stop.");
+        if (components.length != 7) {
+            throw new JsonParseException("Illegal number of parameters for a Stop: " + components.length);
         }
         String id = components[0];
-        Optional<String> region = components[2].isEmpty() ? Optional.empty() : Optional.of(components[2]);
+        String region = components[2].isEmpty() ? null : components[2];
         String name = components[3];
         try {
             Double x = Double.valueOf(components[5]);
             Double y = Double.valueOf(components[4]);
-            Optional<WGSCoordinate> location;
+            WGSCoordinate location;
             if (x != 0 && y != 0) {
-                location = Optional.of(new WGSCoordinate(x, y));
+                location = new WGSCoordinate(x, y);
             } else {
-                location = Optional.empty();
+                location = null;
             }
             return new Stop(id, name, region, location);
         } catch (NumberFormatException e) {

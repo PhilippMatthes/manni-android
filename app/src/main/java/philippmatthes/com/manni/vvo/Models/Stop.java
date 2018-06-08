@@ -1,5 +1,6 @@
 package philippmatthes.com.manni.vvo.Models;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
@@ -24,47 +25,51 @@ public class Stop implements Comparable<Stop> {
     // Deserialization with StopDeserializer
     @Getter @Setter private String id;
     @Getter @Setter private String name;
-    @Getter @Setter private Optional<String> region;
-    @Getter @Setter private Optional<WGSCoordinate> location;
+    @Getter @Setter private String region;
+    @Getter @Setter private WGSCoordinate location;
 
     public static void find(
             String query,
-            Response.Listener<Result<FindResponse>> listener
+            Response.Listener<Result<FindResponse>> listener,
+            RequestQueue queue
     ) {
-        Map<String, String> data = new HashMap<>();
-        data.put("limit", "0");
+        Map<String, Object> data = new HashMap<>();
+        data.put("limit", 0);
         data.put("query", query);
-        data.put("stopsOnly", "true");
-        data.put("dvb", "true");
-        Connection.post(Endpoint.pointfinder, data, listener);
+        data.put("stopsOnly", true);
+        data.put("dvb", true);
+        Connection.post(Endpoint.pointfinder, data, listener, FindResponse.class, queue);
     }
 
     public static void findNear(
             Double lat,
             Double lng,
-            Response.Listener<Result<FindResponse>> listener
+            Response.Listener<Result<FindResponse>> listener,
+            RequestQueue queue
     ) {
         WGSCoordinate coordinate = new WGSCoordinate(lat, lng);
         findNear(
                 coordinate,
-                listener
+                listener,
+                queue
         );
     }
 
     public static void findNear(
             WGSCoordinate coordinate,
-            Response.Listener<Result<FindResponse>> listener
+            Response.Listener<Result<FindResponse>> listener,
+            RequestQueue queue
     ) {
         Optional<GKCoordinate> gkCoordinate = coordinate.asGK();
         if (!gkCoordinate.isPresent()) {
             listener.onResponse(new Result<>(Optional.empty(), Optional.of(DVBError.coordinate)));
             return;
         }
-        Map<String, String> data = new HashMap<>();
-        data.put("limit", "10");
-        data.put("assignedStops", "true");
+        Map<String, Object> data = new HashMap<>();
+        data.put("limit", 10);
+        data.put("assignedStops", true);
         data.put("query", "coord:" + gkCoordinate.get().getX().intValue() + ":" + gkCoordinate.get().getY().intValue());
-        Connection.post(Endpoint.pointfinder, data, listener);
+        Connection.post(Endpoint.pointfinder, data, listener, FindResponse.class, queue);
     }
 
     public void monitor(
@@ -72,9 +77,10 @@ public class Stop implements Comparable<Stop> {
             Departure.DateType dateType,
             List<Mode> modes,
             Boolean allowShorttermChanges,
-            Response.Listener<Result<MonitorResponse>> listener
+            Response.Listener<Result<MonitorResponse>> listener,
+            RequestQueue queue
     ) {
-        Departure.monitor(id, date, dateType, modes, allowShorttermChanges, listener);
+        Departure.monitor(id, date, dateType, modes, allowShorttermChanges, listener, queue);
     }
 
 

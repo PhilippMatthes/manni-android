@@ -1,5 +1,6 @@
 package philippmatthes.com.manni.vvo.Models;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.google.gson.annotations.SerializedName;
 
@@ -23,8 +24,8 @@ public class TripStop implements Comparable<TripStop> {
     @SerializedName("Place") @Getter @Setter private String place;
     @SerializedName("Name") @Getter @Setter private String name;
     @SerializedName("Position") @Getter @Setter private Position position;
-    @SerializedName("Platform") @Getter @Setter private Optional<Platform> platform;
-    @SerializedName("Time") @Getter @Setter private Date time;
+    @SerializedName("Platform") @Getter @Setter private Platform platform;
+    @SerializedName("Time") @Getter @Setter private String time;
 
     @Override
     public int compareTo(TripStop o) {
@@ -51,13 +52,14 @@ public class TripStop implements Comparable<TripStop> {
             String tripId,
             String stopId,
             Date time,
-            Response.Listener<Result<TripsResponse>> listener
+            Response.Listener<Result<TripsResponse>> listener,
+            RequestQueue queue
     ) {
-        Map<String, String> data = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
         data.put("tripid", tripId);
         data.put("stopid", stopId);
         data.put("time", SAP.fromDate(time));
-        Connection.post(Endpoint.trip, data, listener);
+        Connection.post(Endpoint.trip, data, listener, TripsResponse.class, queue);
     }
 
     @Override

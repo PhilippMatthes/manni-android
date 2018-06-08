@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
-public class FindResponse implements Response {
+public class FindResponse {
     @SerializedName("Points") @Getter @Setter private List<Stop> stops;
-    @SerializedName("ExpirationTime") @Getter @Setter private Date expirationTime;
+    @SerializedName("ExpirationTime") @Getter @Setter private String expirationTime;
 }

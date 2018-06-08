@@ -1,5 +1,6 @@
 package philippmatthes.com.manni.vvo.Models;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.google.gson.annotations.SerializedName;
 
@@ -20,7 +21,7 @@ import philippmatthes.com.manni.vvo.Result;
 public class Line implements Comparable<Line>  {
     @SerializedName("Name") @Getter @Setter private String name;
     @SerializedName("Mot") @Getter @Setter private Mode mode;
-    @SerializedName("Changes") @Getter @Setter private Optional<List<String>> changes;
+    @SerializedName("Changes") @Getter @Setter private List<String> changes;
     @SerializedName("Directions") @Getter @Setter private List<Direction> directions;
     @SerializedName("Diva") @Getter @Setter private Diva diva;
 
@@ -43,16 +44,18 @@ public class Line implements Comparable<Line>  {
 
     public static void getById(
         String stopId,
-        Response.Listener<Result<LinesResponse>> listener
+        Response.Listener<Result<LinesResponse>> listener,
+        RequestQueue queue
     ) {
-        Map<String, String> data = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
         data.put("stopid", stopId);
-        Connection.post(Endpoint.lines, data, listener);
+        Connection.post(Endpoint.lines, data, listener, LinesResponse.class, queue);
     }
 
     public static void getByName(
         String stopName,
-        Response.Listener<Result<LinesResponse>> listener
+        Response.Listener<Result<LinesResponse>> listener,
+        RequestQueue queue
     ) {
         Stop.find(
             stopName,
@@ -67,8 +70,8 @@ public class Line implements Comparable<Line>  {
                     return;
                 }
                 Stop stop = stops.get(0);
-                getById(stop.getId(), listener);
-            }
+                getById(stop.getId(), listener, queue);
+            }, queue
         );
     }
 

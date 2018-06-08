@@ -1,5 +1,6 @@
 package philippmatthes.com.manni.vvo.Models;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -22,29 +23,29 @@ public class Departure implements Comparable<Departure> {
     @Getter @Setter @SerializedName("Id") private String id;
     @Getter @Setter @SerializedName("LineName") private String line;
     @Getter @Setter @SerializedName("Direction") private String direction;
-    @Getter @Setter @SerializedName("Platform") private Optional<Platform> platform;
+    @Getter @Setter @SerializedName("Platform") private Platform platform;
     @Getter @Setter @SerializedName("Mot") private Mode mode;
-    @Getter @Setter @SerializedName("RealTime") private Optional<Date> realTime;
-    @Getter @Setter @SerializedName("ScheduledTime") private Date scheduledTime;
-    @Getter @Setter @SerializedName("State") private Optional<State> state;
-    @Getter @Setter @SerializedName("RouteChanges") private Optional<List<String>> routeChanges;
-    @Getter @Setter @SerializedName("Diva") private Optional<Diva> diva;
+    @Getter @Setter @SerializedName("RealTime") private String realTime;
+    @Getter @Setter @SerializedName("ScheduledTime") private String scheduledTime;
+    @Getter @Setter @SerializedName("State") private State state;
+    @Getter @Setter @SerializedName("RouteChanges") private List<String> routeChanges;
+    @Getter @Setter @SerializedName("Diva") private Diva diva;
 
-    public Integer getETA() {
-        return realTime.isPresent() ? Time.minutesUntil(realTime.get()) : getScheduledETA();
-    }
+    //public Integer getETA() {
+    //    return realTime == null ? Time.minutesUntil(realTime) : getScheduledETA();
+    //}
 
-    public Integer getScheduledETA() {
-        return Time.minutesUntil(scheduledTime);
-    }
+    // TODO public Integer getScheduledETA() {
+    //    return Time.minutesUntil(scheduledTime);
+    // }
 
+    /*
     public String fancyETA() {
-        if (!realTime.isPresent()) {
+        if (realTime == null) {
             return getScheduledETA().toString();
         }
 
-        Date time = realTime.get();
-        Integer diff = Time.minutesUntil(time);
+        Integer diff = Time.minutesUntil(realTime);
         if (diff < 0) {
             return getScheduledETA().toString()+diff.toString();
         } else if (diff == 0) {
@@ -53,6 +54,7 @@ public class Departure implements Comparable<Departure> {
             return getScheduledETA().toString()+"+"+diff.toString();
         }
     }
+    */
 
     @Override
     public int compareTo(Departure o) {
@@ -111,25 +113,26 @@ public class Departure implements Comparable<Departure> {
          DateType dateType,
          List<Mode> allowedModes,
          Boolean allowShorttermChanges,
-         Response.Listener<Result<MonitorResponse>> listener
+         Response.Listener<Result<MonitorResponse>> listener,
+         RequestQueue queue
     ) {
-        Map<String, String> data = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
         data.put("stopid", stopId);
         data.put("time", ISO8601.fromDate(date));
-        data.put("isarrival", dateType.requestVal().toString());
+        data.put("isarrival", dateType.requestVal());
         data.put("limit", "0");
-        data.put("shorttermchanges", allowShorttermChanges.toString());
-        data.put("mot", new Gson().toJson(
-                allowedModes.stream()
+        data.put("shorttermchanges", allowShorttermChanges);
+        List<String> modes = allowedModes.stream()
                 .map(mode -> mode.getRawValue())
-                .collect(Collectors.toList())
-        ));
-        Connection.post(Endpoint.departureMonitor, data, listener);
+                .collect(Collectors.toList());
+        data.put("mot", modes);
+        Connection.post(Endpoint.departureMonitor, data, listener, MonitorResponse.class, queue);
     }
 
     public static void monitor(
         String stopWithId,
-        Response.Listener<Result<MonitorResponse>> listener
+        Response.Listener<Result<MonitorResponse>> listener,
+        RequestQueue queue
     ) {
         Departure.monitor(
             stopWithId,
@@ -137,7 +140,8 @@ public class Departure implements Comparable<Departure> {
             DateType.arrival,
             Mode.getAll(),
             true,
-                listener
+            listener,
+            queue
         );
     }
 
@@ -147,7 +151,8 @@ public class Departure implements Comparable<Departure> {
         DateType dateType,
         List<Mode> allowedModes,
         Boolean allowShorttermChanges,
-        Response.Listener<Result<MonitorResponse>> listener
+        Response.Listener<Result<MonitorResponse>> listener,
+        RequestQueue queue
     ) {
         Stop.find(stopName,
             response -> {
@@ -167,15 +172,17 @@ public class Departure implements Comparable<Departure> {
                         dateType,
                         allowedModes,
                         allowShorttermChanges,
-                        listener
+                        listener,
+                        queue
                 );
-            }
+            }, queue
         );
     }
 
     public static void monitorByName(
             String stopName,
-            Response.Listener<Result<MonitorResponse>> listener
+            Response.Listener<Result<MonitorResponse>> listener,
+            RequestQueue queue
     ) {
         monitorByName(
                 stopName,
@@ -183,7 +190,8 @@ public class Departure implements Comparable<Departure> {
                 DateType.departure,
                 Mode.getAll(),
                 true,
-                listener
+                listener,
+                queue
         );
     }
 

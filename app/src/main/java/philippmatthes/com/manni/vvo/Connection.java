@@ -1,51 +1,72 @@
 package philippmatthes.com.manni.vvo;
 
 
-import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.android.volley.toolbox.JsonObjectRequest;
 
-import java.lang.reflect.Type;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
 import java.util.Map;
 import java.util.Optional;
+
+import philippmatthes.com.manni.vvo.Models.Stop;
+import philippmatthes.com.manni.vvo.Models.StopDeserializer;
 
 public class Connection {
 
     public static void makeRequest(
             String url,
-            Map<String, String> data,
-            Response.Listener<String> listener,
-            Response.ErrorListener errorListener) {
+            Map<String, Object> data,
+            Response.Listener<JSONObject> listener,
+            Response.ErrorListener errorListener,
+            RequestQueue queue) {
+        String jsonedDataString = new Gson().toJson(data);
         try {
-            StringRequest request = new StringRequest(Request.Method.POST, url, listener, errorListener) {
-                protected Map<String, String> getParams() {
-                    return data;
-                }
-            };
-        } catch (UnsatisfiedLinkError e) {
-            System.out.println(e);
+            JSONObject jsonData = new JSONObject(jsonedDataString);
+            JsonObjectRequest request = new JsonObjectRequest(url, jsonData, listener, errorListener);
+            queue.add(request);
+        } catch (UnsatisfiedLinkError | JSONException e) {
             errorListener.onErrorResponse(new VolleyError(e.getMessage()));
         }
     }
 
-    public static <T extends philippmatthes.com.manni.vvo.Models.Response> void post(
+    public static <T> void post(
             String url,
-            Map<String, String> data,
-            Response.Listener<Result<T>> responseListener
+            Map<String, Object> data,
+            Response.Listener<Result<T>> responseListener,
+            Class<T> clazz,
+            RequestQueue queue
     ) {
-        Type typeOfT = new TypeToken<T>(){}.getType();
+        // Register custom deserializers
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
+
+        gsonBuilder.registerTypeAdapter(Stop.class, new StopDeserializer());
+
+        Gson gson = gsonBuilder.create();
+
         makeRequest(url, data,
                 response -> {
-                    T findResponse = new Gson().fromJson(response, typeOfT);
-                    Result<T> result = new Result<>(Optional.of(findResponse), Optional.empty());
+                    JsonElement element = gson.fromJson(response.toString(), JsonElement.class);
+                    System.out.println("Received JSON: " + element.toString());
+                    T typeResponse = gson.fromJson(element, clazz);
+                    Result<T> result = new Result<>(Optional.of(typeResponse), Optional.empty());
                     responseListener.onResponse(result);
                 }, error -> {
                     Result<T> result = new Result<>(Optional.empty(), Optional.of(DVBError.response));
                     responseListener.onResponse(result);
-                }
+                },
+                queue
         );
     }
 }

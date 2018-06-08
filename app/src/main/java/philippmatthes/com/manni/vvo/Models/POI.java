@@ -1,5 +1,6 @@
 package philippmatthes.com.manni.vvo.Models;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -64,7 +65,8 @@ public class POI {
     public static void find(
         List<Kind> types,
         CoordRect inRect,
-        Response.Listener<Result<POIResponse>> listener
+        Response.Listener<Result<POIResponse>> listener,
+        RequestQueue queue
     ) {
         Optional<GKCoordinate> sw = inRect.getSouthwest().asGK();
         Optional<GKCoordinate> ne = inRect.getNortheast().asGK();
@@ -73,16 +75,13 @@ public class POI {
             listener.onResponse(new Result<>(Optional.empty(), Optional.of(DVBError.coordinate)));
             return;
         }
-        Map<String, String> data = new HashMap<>();
-        data.put("swlat", sw.get().getX().toString());
-        data.put("swlng", sw.get().getY().toString());
-        data.put("nelat", ne.get().getX().toString());
-        data.put("nelng", ne.get().getY().toString());
-        data.put("showlines", "true");
-        data.put(
-            "pintypes",
-            new Gson().toJson(types.stream().map(Kind::getValue).collect(Collectors.toList()))
-        );
-        Connection.post(Endpoint.poiSearch, data, listener);
+        Map<String, Object> data = new HashMap<>();
+        data.put("swlat", sw.get().getX());
+        data.put("swlng", sw.get().getY());
+        data.put("nelat", ne.get().getX());
+        data.put("nelng", ne.get().getY());
+        data.put("showlines", true);
+        data.put("pintypes", types.stream().map(Kind::getValue).collect(Collectors.toList()));
+        Connection.post(Endpoint.poiSearch, data, listener, POIResponse.class, queue);
     }
 }
