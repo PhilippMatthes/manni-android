@@ -6,19 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import philippmatthes.com.manni.vvo.Models.Departure;
-import philippmatthes.com.manni.vvo.Models.Line;
-import philippmatthes.com.manni.vvo.Models.POI;
-import philippmatthes.com.manni.vvo.Models.Route;
-import philippmatthes.com.manni.vvo.Models.RouteChange;
-import philippmatthes.com.manni.vvo.Models.Stop;
-import philippmatthes.com.manni.vvo.WGSCoordinate;
+import philippmatthes.com.manni.jVVO.Models.Route;
 
 public class MainActivity extends AppCompatActivity {
 
