@@ -13,8 +13,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import philippmatthes.com.manni.vvo.Models.Departure;
+import philippmatthes.com.manni.vvo.Models.Line;
 import philippmatthes.com.manni.vvo.Models.POI;
 import philippmatthes.com.manni.vvo.Models.Route;
+import philippmatthes.com.manni.vvo.Models.RouteChange;
 import philippmatthes.com.manni.vvo.Models.Stop;
 import philippmatthes.com.manni.vvo.WGSCoordinate;
 
@@ -27,27 +29,76 @@ public class MainActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
+        /*
         Departure.monitorByName("Tharandter Straße", queue, response -> {
-            System.out.println(response.getResponse().get().getDepartures());
+            if (response.getResponse().isPresent()) {
+                System.out.println(response.getResponse().get().getDepartures());
+            } else {
+                System.out.println(response.getError().get().getDescription());
+            }
         });
 
-        /*
-        Stop.find("Tharandter Straße", response -> System.out.println(response.getResponse().get().getStops()), queue);
+        RouteChange.get(queue, response -> {
+            System.out.println(response.getResponse().get().getChanges());
+        });
 
-        Route.find("33000155", "33000028", response -> {
-            for (Route route : response.getResponse().get().getRoutes()) {
-                System.out.println(route.getModeChain().stream().map(mode -> mode.getName()).collect(Collectors.toList()));
+
+        Stop.find("Tharandter Straße", queue, response -> {
+            if (response.getResponse().isPresent()) {
+                System.out.println(response.getResponse().get().getStops());
+            } else {
+                System.out.println(response.getError().get().getDescription());
             }
-        }, queue);
+        });
 
-
-
-        Route.findByName("Clara-Viebig-Straße", "Tharandter Straße", response -> {
-            for (Route route : response.getResponse().get().getRoutes()) {
-                System.out.println(route.getModeChain().stream().map(mode -> mode.getName()).collect(Collectors.toList()));
+        Route.find("33000155", "33000028", queue, response -> {
+            if (response.getResponse().isPresent()) {
+                for (Route route : response.getResponse().get().getRoutes()) {
+                    System.out.println(route.getModeChain().stream().map(mode -> mode.getName()).collect(Collectors.toList()));
+                }
+            } else {
+                System.out.println(response.getError().get().getDescription());
             }
-        }, queue);
+        });
+
+        Route.findByName("Tharandter Straße", "Hauptbahnhof", queue, response -> {
+            if (response.getResponse().isPresent()) {
+                for (Route route : response.getResponse().get().getRoutes()) {
+                    System.out.println(route.getModeChain().stream().map(mode -> mode.getName()).collect(Collectors.toList()));
+                }
+            } else {
+                System.out.println(response.getError().get().getDescription());
+            }
+        });
+
+        RouteChange.get(queue, response -> {
+            if (response.getResponse().isPresent()) {
+                for (RouteChange change : response.getResponse().get().getChanges()) {
+                    System.out.println(change.getTitle());
+                }
+            } else {
+                System.out.println(response.getError().get().getDescription());
+            }
+        });
+
+        Line.getByName("Hauptbahnhof", queue, response -> {
+            if (response.getResponse().isPresent()) {
+                System.out.println(response.getResponse().get().getLines());
+            } else {
+                System.out.println(response.getError().get().getDescription());
+            }
+        });
         */
+
+        Route.findByName("Tharandter Straße", "Hauptbahnhof", queue, response -> {
+            if (response.getResponse().isPresent()) {
+                for (Route route : response.getResponse().get().getRoutes()) {
+                    System.out.println(route.getModeChain().stream().map(mode -> mode.getName()).collect(Collectors.toList()));
+                }
+            } else {
+                System.out.println(response.getError().get().getDescription());
+            }
+        });
     }
 
 

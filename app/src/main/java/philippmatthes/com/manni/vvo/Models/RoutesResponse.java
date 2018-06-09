@@ -6,12 +6,13 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
 @ToString
 @AllArgsConstructor
 public class RoutesResponse {
-    @SerializedName("Routes") @Getter @Setter private List<Route> routes;
-    @SerializedName("SessionId") @Getter @Setter private String sessionId;
+    @NonNull @SerializedName("Routes") @Getter @Setter private List<Route> routes;
+    @NonNull @SerializedName("SessionId") @Getter @Setter private String sessionId;
 }

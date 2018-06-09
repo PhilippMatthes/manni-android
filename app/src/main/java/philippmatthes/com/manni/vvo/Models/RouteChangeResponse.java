@@ -2,6 +2,8 @@ package philippmatthes.com.manni.vvo.Models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
@@ -10,7 +12,7 @@ import lombok.ToString;
 
 @ToString
 @AllArgsConstructor
-public class Diva {
-    @NonNull @SerializedName("Number")@Getter @Setter private String number;
-    @NonNull @SerializedName("Network")@Getter @Setter private String network;
+public class RouteChangeResponse {
+    @NonNull @Getter @Setter @SerializedName("Lines") private List<RouteChange.Line> lines;
+    @NonNull @Getter @Setter @SerializedName("Changes") private List<RouteChange> changes;
 }

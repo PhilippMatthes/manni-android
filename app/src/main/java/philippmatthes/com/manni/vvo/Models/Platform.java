@@ -4,12 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
 @ToString
 @AllArgsConstructor
 public class Platform {
-    @SerializedName("Name") @Getter @Setter private String name;
-    @SerializedName("Type") @Getter @Setter private String type;
+    @NonNull @SerializedName("Name") @Getter @Setter private String name;
+    @NonNull @SerializedName("Type") @Getter @Setter private String type;
 }

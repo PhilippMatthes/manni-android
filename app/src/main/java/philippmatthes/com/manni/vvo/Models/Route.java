@@ -1,7 +1,5 @@
 package philippmatthes.com.manni.vvo.Models;
 
-import android.support.annotation.NonNull;
-
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -10,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import philippmatthes.com.manni.vvo.Connection;
@@ -27,18 +26,18 @@ import java.util.stream.Collectors;
 public class Route implements Comparable<Route> {
     @SerializedName("PriceLevel") @Getter @Setter private Integer priceLevel;
     @SerializedName("Price") @Getter @Setter private String price;
-    @SerializedName("Duration") @Getter @Setter private Integer duration;
-    @SerializedName("Interchanges") @Getter @Setter private Integer interchanges;
-    @SerializedName("MotChain") @Getter @Setter private List<ModeElement> modeChain;
+    @NonNull @SerializedName("Duration") @Getter @Setter private Integer duration;
+    @NonNull @SerializedName("Interchanges") @Getter @Setter private Integer interchanges;
+    @NonNull @SerializedName("MotChain") @Getter @Setter private List<ModeElement> modeChain;
     @SerializedName("FareZoneOrigin") @Getter @Setter private Integer fareZoneOrigin;
     @SerializedName("FareZoneDestination") @Getter @Setter private Integer fareZoneDestination;
-    @SerializedName("MapPdfId") @Getter @Setter private String mapPdfId;
-    @SerializedName("RouteId") @Getter @Setter private Integer routeId;
-    @SerializedName("PartialRoutes") @Getter @Setter private List<RoutePartial> partialRoutes;
-    @SerializedName("MapData") @Getter @Setter private List<String> mapData;
+    @NonNull @SerializedName("MapPdfId") @Getter @Setter private String mapPdfId;
+    @NonNull @SerializedName("RouteId") @Getter @Setter private Integer routeId;
+    @NonNull @SerializedName("PartialRoutes") @Getter @Setter private List<RoutePartial> partialRoutes;
+    @NonNull @SerializedName("MapData") @Getter @Setter private List<String> mapData;
 
     @Override
-    public int compareTo(@NonNull Route o) {
+    public int compareTo(Route o) {
         return o.getRouteId().compareTo(routeId);
     }
 
@@ -57,21 +56,21 @@ public class Route implements Comparable<Route> {
     public class RoutePartial {
         @SerializedName("PartialRouteId") @Getter @Setter private Integer partialRouteId;
         @SerializedName("Duration") @Getter @Setter private Integer duration;
-        @SerializedName("Mot") @Getter @Setter private ModeElement mode;
-        @SerializedName("MapDataIndex") @Getter @Setter private Integer mapDataIndex;
-        @SerializedName("Shift") @Getter @Setter private String shift;
+        @NonNull @SerializedName("Mot") @Getter @Setter private ModeElement mode;
+        @NonNull @SerializedName("MapDataIndex") @Getter @Setter private Integer mapDataIndex;
+        @NonNull @SerializedName("Shift") @Getter @Setter private String shift;
         @SerializedName("RegularStops") @Getter @Setter private List<RouteStop> regularStops;
     }
 
     @ToString
     @AllArgsConstructor
     public class RouteStop {
-        @SerializedName("ArrivalTime") @Getter @Setter private String arrivalTime;
-        @SerializedName("DepartureTime") @Getter @Setter private String departureTime;
-        @SerializedName("Place") @Getter @Setter private String place;
-        @SerializedName("Name") @Getter @Setter private String name;
-        @SerializedName("Type") @Getter @Setter private String type;
-        @SerializedName("DataId") @Getter @Setter private String dataId;
+        @NonNull @SerializedName("ArrivalTime") @Getter @Setter private Date arrivalTime;
+        @NonNull @SerializedName("DepartureTime") @Getter @Setter private Date departureTime;
+        @NonNull @SerializedName("Place") @Getter @Setter private String place;
+        @NonNull @SerializedName("Name") @Getter @Setter private String name;
+        @NonNull @SerializedName("Type") @Getter @Setter private String type;
+        @NonNull @SerializedName("DataId") @Getter @Setter private String dataId;
         @SerializedName("Platform") @Getter @Setter private Platform platform;
         @SerializedName("Latitude") @Getter @Setter private Double wgsLatitude;
         @SerializedName("Longitude") @Getter @Setter private Double wgsLongitude;

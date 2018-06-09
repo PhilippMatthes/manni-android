@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import philippmatthes.com.manni.vvo.Connection;
@@ -21,10 +22,10 @@ import philippmatthes.com.manni.vvo.Result;
 @ToString
 @AllArgsConstructor
 public class Line implements Comparable<Line>  {
-    @SerializedName("Name") @Getter @Setter private String name;
-    @SerializedName("Mot") @Getter @Setter private Mode mode;
+    @NonNull @SerializedName("Name") @Getter @Setter private String name;
+    @NonNull @SerializedName("Mot") @Getter @Setter private Mode mode;
     @SerializedName("Changes") @Getter @Setter private List<String> changes;
-    @SerializedName("Directions") @Getter @Setter private List<Direction> directions;
+    @NonNull @SerializedName("Directions") @Getter @Setter private List<Direction> directions;
     @SerializedName("Diva") @Getter @Setter private Diva diva;
 
     @Override
@@ -32,16 +33,18 @@ public class Line implements Comparable<Line>  {
         return o.getName().compareTo(name);
     }
 
+    @ToString
     @AllArgsConstructor
     public class Direction {
-        @SerializedName("Name") @Getter @Setter private String name;
-        @SerializedName("TimeTables") @Getter @Setter private List<TimeTable> timetables;
+        @NonNull @SerializedName("Name") @Getter @Setter private String name;
+        @NonNull @SerializedName("TimeTables") @Getter @Setter private List<TimeTable> timetables;
     }
 
+    @ToString
     @AllArgsConstructor
     public class TimeTable {
-        @SerializedName("Id") @Getter @Setter public String id;
-        @SerializedName("Name") @Getter @Setter public String name;
+        @NonNull @SerializedName("Id") @Getter @Setter public String id;
+        @NonNull @SerializedName("Name") @Getter @Setter public String name;
     }
 
     public static void getById(

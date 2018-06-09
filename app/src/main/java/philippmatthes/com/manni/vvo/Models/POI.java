@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import philippmatthes.com.manni.vvo.Connection;
@@ -24,7 +25,7 @@ import philippmatthes.com.manni.vvo.Result;
 @ToString
 @AllArgsConstructor
 public class POI {
-    @Getter @Setter private String descriptionString;
+    @NonNull @Getter @Setter private String descriptionString;
 
     public enum Kind {
         @SerializedName("RentABike") rentABike ("RentABike"),

@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 import philippmatthes.com.manni.vvo.Connection;
@@ -22,13 +23,13 @@ import java.util.stream.Collectors;
 @ToString
 @AllArgsConstructor
 public class Departure implements Comparable<Departure> {
-    @Getter @Setter @SerializedName("Id") private String id;
-    @Getter @Setter @SerializedName("LineName") private String line;
-    @Getter @Setter @SerializedName("Direction") private String direction;
+    @NonNull @Getter @Setter @SerializedName("Id") private String id;
+    @NonNull @Getter @Setter @SerializedName("LineName") private String line;
+    @NonNull @Getter @Setter @SerializedName("Direction") private String direction;
     @Getter @Setter @SerializedName("Platform") private Platform platform;
-    @Getter @Setter @SerializedName("Mot") private Mode mode;
+    @NonNull @Getter @Setter @SerializedName("Mot") private Mode mode;
     @Getter @Setter @SerializedName("RealTime") private Date realTime;
-    @Getter @Setter @SerializedName("ScheduledTime") private Date scheduledTime;
+    @NonNull @Getter @Setter @SerializedName("ScheduledTime") private Date scheduledTime;
     @Getter @Setter @SerializedName("State") private State state;
     @Getter @Setter @SerializedName("RouteChanges") private List<String> routeChanges;
     @Getter @Setter @SerializedName("Diva") private Diva diva;
