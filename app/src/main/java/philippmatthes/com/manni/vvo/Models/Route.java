@@ -11,6 +11,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import philippmatthes.com.manni.vvo.Connection;
 import philippmatthes.com.manni.vvo.DVBError;
 import philippmatthes.com.manni.vvo.Endpoint;
@@ -21,6 +22,7 @@ import philippmatthes.com.manni.vvo.WGSCoordinate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@ToString
 @AllArgsConstructor
 public class Route implements Comparable<Route> {
     @SerializedName("PriceLevel") @Getter @Setter private Integer priceLevel;
@@ -40,6 +42,7 @@ public class Route implements Comparable<Route> {
         return o.getRouteId().compareTo(routeId);
     }
 
+    @ToString
     @AllArgsConstructor
     public class ModeElement {
         @SerializedName("Name") @Getter @Setter private String name;
@@ -49,6 +52,7 @@ public class Route implements Comparable<Route> {
         @SerializedName("Diva") @Getter @Setter private Diva diva;
     }
 
+    @ToString
     @AllArgsConstructor
     public class RoutePartial {
         @SerializedName("PartialRouteId") @Getter @Setter private Integer partialRouteId;
@@ -59,6 +63,7 @@ public class Route implements Comparable<Route> {
         @SerializedName("RegularStops") @Getter @Setter private List<RouteStop> regularStops;
     }
 
+    @ToString
     @AllArgsConstructor
     public class RouteStop {
         @SerializedName("ArrivalTime") @Getter @Setter private String arrivalTime;
@@ -84,8 +89,8 @@ public class Route implements Comparable<Route> {
             Date time,
             Boolean dateIsArrival,
             Boolean allowShortTermChanges,
-            Response.Listener<Result<RoutesResponse>> listener,
-            RequestQueue queue
+            RequestQueue queue,
+            Response.Listener<Result<RoutesResponse>> listener
     ) {
         Map<String, Object> data = new HashMap<>();
         data.put("origin", originId);
@@ -108,8 +113,8 @@ public class Route implements Comparable<Route> {
     public static void find(
             String originId,
             String destinationId,
-            Response.Listener<Result<RoutesResponse>> listener,
-            RequestQueue queue
+            RequestQueue queue,
+            Response.Listener<Result<RoutesResponse>> listener
     ) {
         find(
                 originId,
@@ -117,8 +122,8 @@ public class Route implements Comparable<Route> {
                 new Date(),
                 false,
                 true,
-                listener,
-                queue
+                queue,
+                listener
         );
     }
 
@@ -128,11 +133,11 @@ public class Route implements Comparable<Route> {
             Date time,
             Boolean dateIsArrival,
             Boolean allowShortTermChanges,
-            Response.Listener<Result<RoutesResponse>> listener,
-            RequestQueue queue
+            RequestQueue queue,
+            Response.Listener<Result<RoutesResponse>> listener
     ) {
 
-        Stop.find(origin,
+        Stop.find(origin, queue,
             originResponse -> {
                 if (!originResponse.getResponse().isPresent()) {
                     listener.onResponse(new Result<>(Optional.empty(), originResponse.getError()));
@@ -145,7 +150,7 @@ public class Route implements Comparable<Route> {
                 }
                 String originId = originFindResponse.getStops().get(0).getId();
 
-                Stop.find(destination,
+                Stop.find(destination, queue,
                     destinationResponse -> {
                         if (!destinationResponse.getResponse().isPresent()) {
                             listener.onResponse(new Result<>(Optional.empty(), destinationResponse.getError()));
@@ -164,20 +169,20 @@ public class Route implements Comparable<Route> {
                                 time,
                                 dateIsArrival,
                                 allowShortTermChanges,
-                                listener,
-                                queue
+                                queue,
+                                listener
                         );
-                    }, queue
+                    }
                 );
-            }, queue
+            }
         );
     }
 
     public static void findByName(
             String origin,
             String destination,
-            Response.Listener<Result<RoutesResponse>> listener,
-            RequestQueue queue
+            RequestQueue queue,
+            Response.Listener<Result<RoutesResponse>> listener
     ) {
         findByName(
                 origin,
@@ -185,8 +190,8 @@ public class Route implements Comparable<Route> {
                 new Date(),
                 false,
                 true,
-                listener,
-                queue
+                queue,
+                listener
         );
     }
 

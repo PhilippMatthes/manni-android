@@ -8,9 +8,11 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+@ToString
 @AllArgsConstructor
 public class POIResponse {
     @SerializedName("Pins") @Getter @Setter private List<POI> pins;
-    @SerializedName("ExpirationTime") @Getter @Setter private String expirationTime;
+    @SerializedName("ExpirationTime") @Getter @Setter private Date expirationTime;
 }

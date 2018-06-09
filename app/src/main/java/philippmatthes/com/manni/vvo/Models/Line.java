@@ -12,11 +12,13 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import philippmatthes.com.manni.vvo.Connection;
 import philippmatthes.com.manni.vvo.DVBError;
 import philippmatthes.com.manni.vvo.Endpoint;
 import philippmatthes.com.manni.vvo.Result;
 
+@ToString
 @AllArgsConstructor
 public class Line implements Comparable<Line>  {
     @SerializedName("Name") @Getter @Setter private String name;
@@ -44,8 +46,8 @@ public class Line implements Comparable<Line>  {
 
     public static void getById(
         String stopId,
-        Response.Listener<Result<LinesResponse>> listener,
-        RequestQueue queue
+        RequestQueue queue,
+        Response.Listener<Result<LinesResponse>> listener
     ) {
         Map<String, Object> data = new HashMap<>();
         data.put("stopid", stopId);
@@ -54,11 +56,11 @@ public class Line implements Comparable<Line>  {
 
     public static void getByName(
         String stopName,
-        Response.Listener<Result<LinesResponse>> listener,
-        RequestQueue queue
+        RequestQueue queue,
+        Response.Listener<Result<LinesResponse>> listener
     ) {
         Stop.find(
-            stopName,
+            stopName, queue,
             response -> {
                 if (!response.getResponse().isPresent()) {
                     listener.onResponse(new Result<>(Optional.empty(), response.getError()));
@@ -70,8 +72,8 @@ public class Line implements Comparable<Line>  {
                     return;
                 }
                 Stop stop = stops.get(0);
-                getById(stop.getId(), listener, queue);
-            }, queue
+                getById(stop.getId(), queue, listener);
+            }
         );
     }
 

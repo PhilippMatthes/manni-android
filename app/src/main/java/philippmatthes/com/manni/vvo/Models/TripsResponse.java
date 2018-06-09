@@ -8,9 +8,11 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+@ToString
 @AllArgsConstructor
 public class TripsResponse {
     @SerializedName("Stops") @Getter @Setter private List<TripStop> tripStops;
-    @SerializedName("ExpirationTime") @Getter @Setter private String expirationTime;
+    @SerializedName("ExpirationTime") @Getter @Setter private Date expirationTime;
 }

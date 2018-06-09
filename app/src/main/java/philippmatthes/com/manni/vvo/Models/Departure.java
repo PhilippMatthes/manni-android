@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import philippmatthes.com.manni.vvo.Connection;
 import philippmatthes.com.manni.vvo.DVBError;
 import philippmatthes.com.manni.vvo.Endpoint;
@@ -18,6 +19,7 @@ import philippmatthes.com.manni.vvo.Tools.Time;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@ToString
 @AllArgsConstructor
 public class Departure implements Comparable<Departure> {
     @Getter @Setter @SerializedName("Id") private String id;
@@ -25,21 +27,20 @@ public class Departure implements Comparable<Departure> {
     @Getter @Setter @SerializedName("Direction") private String direction;
     @Getter @Setter @SerializedName("Platform") private Platform platform;
     @Getter @Setter @SerializedName("Mot") private Mode mode;
-    @Getter @Setter @SerializedName("RealTime") private String realTime;
-    @Getter @Setter @SerializedName("ScheduledTime") private String scheduledTime;
+    @Getter @Setter @SerializedName("RealTime") private Date realTime;
+    @Getter @Setter @SerializedName("ScheduledTime") private Date scheduledTime;
     @Getter @Setter @SerializedName("State") private State state;
     @Getter @Setter @SerializedName("RouteChanges") private List<String> routeChanges;
     @Getter @Setter @SerializedName("Diva") private Diva diva;
 
-    //public Integer getETA() {
-    //    return realTime == null ? Time.minutesUntil(realTime) : getScheduledETA();
-    //}
+    public Integer getETA() {
+        return realTime != null ? Time.minutesUntil(realTime) : getScheduledETA();
+    }
 
-    // TODO public Integer getScheduledETA() {
-    //    return Time.minutesUntil(scheduledTime);
-    // }
+    public Integer getScheduledETA() {
+        return Time.minutesUntil(scheduledTime);
+    }
 
-    /*
     public String fancyETA() {
         if (realTime == null) {
             return getScheduledETA().toString();
@@ -54,7 +55,6 @@ public class Departure implements Comparable<Departure> {
             return getScheduledETA().toString()+"+"+diff.toString();
         }
     }
-    */
 
     @Override
     public int compareTo(Departure o) {
@@ -89,7 +89,6 @@ public class Departure implements Comparable<Departure> {
         }
     }
 
-
     public enum DateType {
         @SerializedName("arrival") arrival ("arrival"),
         @SerializedName("departure") departure ("departure");
@@ -113,8 +112,8 @@ public class Departure implements Comparable<Departure> {
          DateType dateType,
          List<Mode> allowedModes,
          Boolean allowShorttermChanges,
-         Response.Listener<Result<MonitorResponse>> listener,
-         RequestQueue queue
+         RequestQueue queue,
+         Response.Listener<Result<MonitorResponse>> listener
     ) {
         Map<String, Object> data = new HashMap<>();
         data.put("stopid", stopId);
@@ -131,8 +130,8 @@ public class Departure implements Comparable<Departure> {
 
     public static void monitor(
         String stopWithId,
-        Response.Listener<Result<MonitorResponse>> listener,
-        RequestQueue queue
+        RequestQueue queue,
+        Response.Listener<Result<MonitorResponse>> listener
     ) {
         Departure.monitor(
             stopWithId,
@@ -140,8 +139,8 @@ public class Departure implements Comparable<Departure> {
             DateType.arrival,
             Mode.getAll(),
             true,
-            listener,
-            queue
+                queue,
+            listener
         );
     }
 
@@ -151,10 +150,10 @@ public class Departure implements Comparable<Departure> {
         DateType dateType,
         List<Mode> allowedModes,
         Boolean allowShorttermChanges,
-        Response.Listener<Result<MonitorResponse>> listener,
-        RequestQueue queue
+        RequestQueue queue,
+        Response.Listener<Result<MonitorResponse>> listener
     ) {
-        Stop.find(stopName,
+        Stop.find(stopName, queue,
             response -> {
                 if (!response.getResponse().isPresent()) {
                     listener.onResponse(new Result<>(Optional.empty(), response.getError()));
@@ -172,17 +171,17 @@ public class Departure implements Comparable<Departure> {
                         dateType,
                         allowedModes,
                         allowShorttermChanges,
-                        listener,
-                        queue
+                        queue,
+                        listener
                 );
-            }, queue
+            }
         );
     }
 
     public static void monitorByName(
             String stopName,
-            Response.Listener<Result<MonitorResponse>> listener,
-            RequestQueue queue
+            RequestQueue queue,
+            Response.Listener<Result<MonitorResponse>> listener
     ) {
         monitorByName(
                 stopName,
@@ -190,8 +189,8 @@ public class Departure implements Comparable<Departure> {
                 DateType.departure,
                 Mode.getAll(),
                 true,
-                listener,
-                queue
+                queue,
+                listener
         );
     }
 

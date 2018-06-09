@@ -12,6 +12,7 @@ import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import philippmatthes.com.manni.vvo.Connection;
 import philippmatthes.com.manni.vvo.DVBError;
 import philippmatthes.com.manni.vvo.Endpoint;
@@ -19,10 +20,10 @@ import philippmatthes.com.manni.vvo.GKCoordinate;
 import philippmatthes.com.manni.vvo.Result;
 import philippmatthes.com.manni.vvo.WGSCoordinate;
 
+@ToString
 @AllArgsConstructor
 public class Stop implements Comparable<Stop> {
 
-    // Deserialization with StopDeserializer
     @Getter @Setter private String id;
     @Getter @Setter private String name;
     @Getter @Setter private String region;
@@ -30,8 +31,8 @@ public class Stop implements Comparable<Stop> {
 
     public static void find(
             String query,
-            Response.Listener<Result<FindResponse>> listener,
-            RequestQueue queue
+            RequestQueue queue,
+            Response.Listener<Result<FindResponse>> listener
     ) {
         Map<String, Object> data = new HashMap<>();
         data.put("limit", 0);
@@ -44,21 +45,21 @@ public class Stop implements Comparable<Stop> {
     public static void findNear(
             Double lat,
             Double lng,
-            Response.Listener<Result<FindResponse>> listener,
-            RequestQueue queue
+            RequestQueue queue,
+            Response.Listener<Result<FindResponse>> listener
     ) {
         WGSCoordinate coordinate = new WGSCoordinate(lat, lng);
         findNear(
                 coordinate,
-                listener,
-                queue
+                queue,
+                listener
         );
     }
 
     public static void findNear(
             WGSCoordinate coordinate,
-            Response.Listener<Result<FindResponse>> listener,
-            RequestQueue queue
+            RequestQueue queue,
+            Response.Listener<Result<FindResponse>> listener
     ) {
         Optional<GKCoordinate> gkCoordinate = coordinate.asGK();
         if (!gkCoordinate.isPresent()) {
@@ -77,10 +78,10 @@ public class Stop implements Comparable<Stop> {
             Departure.DateType dateType,
             List<Mode> modes,
             Boolean allowShorttermChanges,
-            Response.Listener<Result<MonitorResponse>> listener,
-            RequestQueue queue
+            RequestQueue queue,
+            Response.Listener<Result<MonitorResponse>> listener
     ) {
-        Departure.monitor(id, date, dateType, modes, allowShorttermChanges, listener, queue);
+        Departure.monitor(id, date, dateType, modes, allowShorttermChanges, queue, listener);
     }
 
 

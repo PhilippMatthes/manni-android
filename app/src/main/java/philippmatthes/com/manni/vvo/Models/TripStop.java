@@ -12,11 +12,13 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import philippmatthes.com.manni.vvo.Connection;
 import philippmatthes.com.manni.vvo.Endpoint;
 import philippmatthes.com.manni.vvo.Result;
 import philippmatthes.com.manni.vvo.Tools.SAP;
 
+@ToString
 @AllArgsConstructor
 public class TripStop implements Comparable<TripStop> {
 
@@ -25,7 +27,7 @@ public class TripStop implements Comparable<TripStop> {
     @SerializedName("Name") @Getter @Setter private String name;
     @SerializedName("Position") @Getter @Setter private Position position;
     @SerializedName("Platform") @Getter @Setter private Platform platform;
-    @SerializedName("Time") @Getter @Setter private String time;
+    @SerializedName("Time") @Getter @Setter private Date time;
 
     @Override
     public int compareTo(TripStop o) {
@@ -52,8 +54,8 @@ public class TripStop implements Comparable<TripStop> {
             String tripId,
             String stopId,
             Date time,
-            Response.Listener<Result<TripsResponse>> listener,
-            RequestQueue queue
+            RequestQueue queue,
+            Response.Listener<Result<TripsResponse>> listener
     ) {
         Map<String, Object> data = new HashMap<>();
         data.put("tripid", tripId);

@@ -14,12 +14,14 @@ import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import philippmatthes.com.manni.vvo.Connection;
 import philippmatthes.com.manni.vvo.DVBError;
 import philippmatthes.com.manni.vvo.Endpoint;
 import philippmatthes.com.manni.vvo.GKCoordinate;
 import philippmatthes.com.manni.vvo.Result;
 
+@ToString
 @AllArgsConstructor
 public class POI {
     @Getter @Setter private String descriptionString;
@@ -65,8 +67,8 @@ public class POI {
     public static void find(
         List<Kind> types,
         CoordRect inRect,
-        Response.Listener<Result<POIResponse>> listener,
-        RequestQueue queue
+        RequestQueue queue,
+        Response.Listener<Result<POIResponse>> listener
     ) {
         Optional<GKCoordinate> sw = inRect.getSouthwest().asGK();
         Optional<GKCoordinate> ne = inRect.getNortheast().asGK();

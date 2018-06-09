@@ -16,11 +16,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
+import philippmatthes.com.manni.vvo.Deserializers.SAPDateDeserializer;
 import philippmatthes.com.manni.vvo.Models.Stop;
-import philippmatthes.com.manni.vvo.Models.StopDeserializer;
+import philippmatthes.com.manni.vvo.Deserializers.StopDeserializer;
 
 public class Connection {
 
@@ -52,6 +54,7 @@ public class Connection {
         gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
 
         gsonBuilder.registerTypeAdapter(Stop.class, new StopDeserializer());
+        gsonBuilder.registerTypeAdapter(Date.class, new SAPDateDeserializer());
 
         Gson gson = gsonBuilder.create();
 

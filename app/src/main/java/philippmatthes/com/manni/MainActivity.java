@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import philippmatthes.com.manni.vvo.Models.Departure;
@@ -24,15 +27,11 @@ public class MainActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        /*
-        Departure.monitor(
-                "33000155",
-                response -> {
-                    System.out.println(response.getResponse());
-                },
-                queue
-        );
+        Departure.monitorByName("Tharandter Straße", queue, response -> {
+            System.out.println(response.getResponse().get().getDepartures());
+        });
 
+        /*
         Stop.find("Tharandter Straße", response -> System.out.println(response.getResponse().get().getStops()), queue);
 
         Route.find("33000155", "33000028", response -> {

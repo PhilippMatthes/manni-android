@@ -1,4 +1,4 @@
-package philippmatthes.com.manni.vvo.Models;
+package philippmatthes.com.manni.vvo.Deserializers;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import philippmatthes.com.manni.vvo.GKCoordinate;
+import philippmatthes.com.manni.vvo.Models.Stop;
 import philippmatthes.com.manni.vvo.WGSCoordinate;
 
 public class StopDeserializer implements JsonDeserializer<Stop> {
