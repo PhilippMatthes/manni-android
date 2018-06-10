@@ -39,7 +39,7 @@ public class DeparturesActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_departures);
 
-        departureListView = findViewById(R.id.stop_list_view);
+        departureListView = (ListView) findViewById(R.id.stop_list_view);
 
         departureLabels = new ArrayList<>();
 
@@ -52,7 +52,7 @@ public class DeparturesActivity extends AppCompatActivity {
             public View getView(int position, View convertView, ViewGroup parent){
                 View view = super.getView(position, convertView, parent);
 
-                TextView tv1 = view.findViewById(android.R.id.text1);
+                TextView tv1 = (TextView) view.findViewById(android.R.id.text1);
                 tv1.setTextColor(Color.WHITE);
 
                 view.setBackgroundColor(Colors.getColor(tv1.getText().length()));

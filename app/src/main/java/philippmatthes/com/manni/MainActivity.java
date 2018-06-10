@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private void setUp() {
         setContentView(R.layout.activity_main);
 
-        stopListView = findViewById(R.id.stop_list_view);
+        stopListView = (ListView) findViewById(R.id.stop_list_view);
 
         stopListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public View getView(int position, View convertView, ViewGroup parent){
                 View view = super.getView(position, convertView, parent);
-                TextView tv = view.findViewById(android.R.id.text1);
+                TextView tv = (TextView) view.findViewById(android.R.id.text1);
                 tv.setTextColor(Color.WHITE);
                 view.setBackgroundColor(Colors.getColor(tv.getText().length()));
                 return view;
@@ -70,16 +70,19 @@ public class MainActivity extends AppCompatActivity {
         Stop.find(query, queue, response -> {
             if (response.getResponse().isPresent()) {
                 List<Stop> stops = response.getResponse().get().getStops();
-                stopNames = stops.stream()
-                        .map(stop -> {
-                            String title = stop.getName();
-                            if (stop.getRegion() != null) title += " (" + stop.getRegion() + ")";
-                            return title;
-                        })
-                        .collect(Collectors.toList());
-                adapter.clear();
-                adapter.addAll(stopNames);
-                adapter.notifyDataSetChanged();
+                if (stops != null) {
+                    stopNames = stops.stream()
+                            .map(stop -> {
+                                String title = stop.getName();
+                                if (stop.getRegion() != null)
+                                    title += " (" + stop.getRegion() + ")";
+                                return title;
+                            })
+                            .collect(Collectors.toList());
+                    adapter.clear();
+                    adapter.addAll(stopNames);
+                    adapter.notifyDataSetChanged();
+                }
             } else {
                 System.out.println(response.getError().get().getDescription());
             }
