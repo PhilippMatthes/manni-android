@@ -3,6 +3,7 @@ package philippmatthes.com.manni;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,8 +32,9 @@ public class DeparturesActivity extends AppCompatActivity {
     String stopName;
 
     ListView departureListView;
-    ArrayAdapter<String> adapter;
-    List<String> departureLabels;
+    DepartureAdapter adapter;
+    ArrayList<Departure> departures;
+    SwipeRefreshLayout layout;
 
     private void setUp() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -41,26 +43,21 @@ public class DeparturesActivity extends AppCompatActivity {
 
         departureListView = (ListView) findViewById(R.id.stop_list_view);
 
-        departureLabels = new ArrayList<>();
+        departures = new ArrayList<>();
 
-        adapter = new ArrayAdapter<String>(
-                DeparturesActivity.this,
-                android.R.layout.simple_list_item_1,
-                departureLabels
-        ) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent){
-                View view = super.getView(position, convertView, parent);
-
-                TextView tv1 = (TextView) view.findViewById(android.R.id.text1);
-                tv1.setTextColor(Color.WHITE);
-
-                view.setBackgroundColor(Colors.getColor(tv1.getText().length()));
-                return view;
-            }
-        };
+        adapter = new DepartureAdapter(this, departures);
 
         departureListView.setAdapter(adapter);
+
+        layout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
+        layout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        loadDepartures(stopName);
+                    }
+                }
+        );
     }
 
     private void loadDepartures(String stopName) {
@@ -68,15 +65,20 @@ public class DeparturesActivity extends AppCompatActivity {
 
         Departure.monitorByName(stopName, queue, response -> {
             if (response.getResponse().isPresent()) {
-                List<Departure> departures = response.getResponse().get().getDepartures();
-                departureLabels = departures.stream().map(d -> {
-                    return d.getLine() + " " + d.getDirection() + " in " + d.getETA() + " min";
-                }).collect(Collectors.toList());
-                adapter.clear();
-                adapter.addAll(departureLabels);
-                adapter.notifyDataSetChanged();
+                List<Departure> responseDepartures = response.getResponse().get().getDepartures();
+                if (responseDepartures != null) {
+                    departures = new ArrayList<>();
+                    departures.addAll(responseDepartures);
+                    adapter.clear();
+                    adapter.addAll(departures);
+                    adapter.notifyDataSetChanged();
+                }
             } else {
                 System.out.println(response.getError().get().getDescription());
+            }
+
+            if (layout.isRefreshing()) {
+                layout.setRefreshing(false);
             }
         });
     }
@@ -87,7 +89,6 @@ public class DeparturesActivity extends AppCompatActivity {
         setUp();
         stopName = getIntent().getStringExtra("stopName");
         loadDepartures(stopName);
-
     }
 
 
