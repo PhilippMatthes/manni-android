@@ -10,8 +10,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import philippmatthes.com.manni.jVVO.Models.Departure;
+import philippmatthes.com.manni.jVVO.Models.Platform;
 import philippmatthes.com.manni.jVVO.Tools.Time;
 
 public class DepartureAdapter extends ArrayAdapter<Departure> {
@@ -54,7 +56,25 @@ public class DepartureAdapter extends ArrayAdapter<Departure> {
         } else {
             clockLabel.setText("Scheduled Arrival: " + Time.formatDate(departure.getScheduledTime()));
         }
-        moreInformationLabel.setText("From Platform" + departure.getPlatform().getName());
+
+        String moreInformation = departure.getPlatform() != null ? "From Platform: " + departure.getPlatform().getName() : "";
+
+        /*
+        List<String> routeChanges = departure.getRouteChanges();
+
+        if (routeChanges != null) {
+            for (String change : routeChanges) {
+                if (moreInformation == "") {
+
+                    moreInformation += change;
+                } else {
+                    moreInformation += ", " + change;
+                }
+            }
+        }
+        */
+
+        moreInformationLabel.setText(moreInformation);
         button.setText(departure.getLine());
 
 

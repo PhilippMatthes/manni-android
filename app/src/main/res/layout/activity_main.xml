@@ -6,10 +6,98 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+    <RelativeLayout
+        android:id="@+id/search_layout_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/buttonAnchor"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <ImageButton
+            android:id="@+id/toggleDestinationSearchViewButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toEndOf="@id/buttonAnchor"
+            android:src="@drawable/arrow_down"
+            style="?android:attr/borderlessButtonStyle"
+            android:tint="@color/colorDarkBlue"
+            android:background="@drawable/circle"
+            android:contentDescription="@string/expand_image" />
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/search_view_start"
+            android:layout_width="wrap_content"
+            android:layout_toEndOf="@id/toggleDestinationSearchViewButton"
+            android:singleLine="true"
+            android:layout_height="50dp"
+            app:searchIcon="@null"
+            app:queryHint="Start"
+            android:layout_alignParentEnd="true"
+            app:iconifiedByDefault="false"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/search_layout_destination"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/search_layout_start">
+
+        <View
+            android:id="@+id/destinationAnchor"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <ImageButton
+            android:id="@+id/shuffleButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toEndOf="@id/destinationAnchor"
+            android:src="@drawable/shuffle"
+            style="?android:attr/borderlessButtonStyle"
+            android:tint="@color/colorDarkBlue"
+            android:background="@drawable/circle"
+            android:contentDescription="@string/expand_image" />
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/search_view_destination"
+            android:layout_toEndOf="@id/shuffleButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:queryHint="Destination"
+            app:searchIcon="@null"
+            android:layout_alignParentEnd="true"
+            app:iconifiedByDefault="false"/>
+
+    </RelativeLayout>
+
+
+
     <ListView
         android:id="@+id/stop_list_view"
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_weight="1"
+        app:layout_constraintTop_toBottomOf="@+id/search_layout_destination" />
 
 </android.support.constraint.ConstraintLayout>

@@ -3,16 +3,17 @@ package philippmatthes.com.manni;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.SearchView;
+import android.support.v7.widget.SearchView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -29,6 +30,19 @@ public class MainActivity extends AppCompatActivity {
     ListView stopListView;
     ArrayAdapter<String> adapter;
     List<String> stopNames;
+    SearchView startSearchView;
+    RelativeLayout startSearchLayout;
+    SearchView destinationSearchView;
+    RelativeLayout destinationSearchLayout;
+    ImageButton toggleDestinationSearchViewButton;
+
+    boolean destinationSearchViewIsOpen = true;
+
+    private void moveToDepartureActivity(String stopName) {
+        Intent intent = new Intent(getApplicationContext(), DeparturesActivity.class);
+        intent.putExtra("stopName", stopName);
+        startActivity(intent);
+    }
 
     private void setUp() {
         setContentView(R.layout.activity_main);
@@ -38,9 +52,7 @@ public class MainActivity extends AppCompatActivity {
         stopListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), DeparturesActivity.class);
-                intent.putExtra("stopName", stopNames.get(i));
-                startActivity(intent);
+                moveToDepartureActivity(stopNames.get(i));
             }
         });
 
@@ -62,6 +74,37 @@ public class MainActivity extends AppCompatActivity {
         };
 
         stopListView.setAdapter(adapter);
+
+        startSearchView = (SearchView) findViewById(R.id.search_view_start);
+
+        startSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                moveToDepartureActivity(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                loadStops(newText);
+                return false;
+            }
+        });
+
+        startSearchLayout = (RelativeLayout) findViewById(R.id.search_layout_start);
+        startSearchLayout.bringToFront();
+
+        destinationSearchView = (SearchView) findViewById(R.id.search_view_destination);
+        destinationSearchLayout = (RelativeLayout) findViewById(R.id.search_layout_destination);
+
+        toggleDestinationSearchViewButton = (ImageButton) findViewById(R.id.toggleDestinationSearchViewButton);
+
+        toggleDestinationSearchViewButton.setOnClickListener(view -> setDestinationSearchViewOpen(!destinationSearchViewIsOpen));
+    }
+
+    private void hideActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
     }
 
     private void loadStops(String query) {
@@ -90,34 +133,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
-        MenuItem item = menu.findItem(R.id.search_menu);
-        SearchView searchView = (SearchView) item.getActionView();
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // TODO: Jump to activity
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                loadStops(newText);
-                return false;
-            }
-        });
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setUp();
+        hideActionBar();
     }
 
+    private void setDestinationSearchViewOpen(boolean open) {
+        destinationSearchViewIsOpen = open;
+        destinationSearchLayout.animate().translationY(open ? 0 : -150);
+        stopListView.animate().translationY(open ? 0 : -150);
+    }
 
 }

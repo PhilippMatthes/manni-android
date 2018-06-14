@@ -58,6 +58,8 @@ public class DeparturesActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        setTitle(stopName);
     }
 
     private void loadDepartures(String stopName) {
@@ -86,9 +88,9 @@ public class DeparturesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setUp();
         stopName = getIntent().getStringExtra("stopName");
         loadDepartures(stopName);
+        setUp();
     }
 
 
