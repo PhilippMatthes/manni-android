@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <Button
+        style="?android:attr/borderlessButtonStyle"
+        android:textColor="#ffffff"
+        android:contentDescription="@string/expand_image"
+        android:id="@+id/route_cell_header_line_item_button"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:textSize="15sp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:text="Line" />
+
+</LinearLayout>

@@ -24,25 +24,24 @@
         android:orientation="horizontal">
 
         <View
-            android:id="@+id/buttonAnchor"
+            android:id="@+id/button_anchor"
             android:layout_width="0dp"
             android:layout_height="0dp"/>
 
         <ImageButton
-            android:id="@+id/toggleDestinationSearchViewButton"
+            android:id="@+id/toggle_destination_search_view_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_toEndOf="@id/buttonAnchor"
+            android:layout_toEndOf="@id/button_anchor"
             android:src="@drawable/arrow_down"
             style="?android:attr/borderlessButtonStyle"
             android:tint="@color/colorDarkBlue"
-            android:background="@drawable/circle"
             android:contentDescription="@string/expand_image" />
 
         <android.support.v7.widget.SearchView
             android:id="@+id/search_view_start"
             android:layout_width="wrap_content"
-            android:layout_toEndOf="@id/toggleDestinationSearchViewButton"
+            android:layout_toEndOf="@id/toggle_destination_search_view_button"
             android:singleLine="true"
             android:layout_height="50dp"
             app:searchIcon="@null"
@@ -63,24 +62,23 @@
         app:layout_constraintTop_toBottomOf="@+id/search_layout_start">
 
         <View
-            android:id="@+id/destinationAnchor"
+            android:id="@+id/destination_anchor"
             android:layout_width="0dp"
             android:layout_height="0dp"/>
 
         <ImageButton
-            android:id="@+id/shuffleButton"
+            android:id="@+id/shuffle_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_toEndOf="@id/destinationAnchor"
+            android:layout_toEndOf="@id/destination_anchor"
             android:src="@drawable/shuffle"
             style="?android:attr/borderlessButtonStyle"
             android:tint="@color/colorDarkBlue"
-            android:background="@drawable/circle"
             android:contentDescription="@string/expand_image" />
 
         <android.support.v7.widget.SearchView
             android:id="@+id/search_view_destination"
-            android:layout_toEndOf="@id/shuffleButton"
+            android:layout_toEndOf="@id/shuffle_button"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             app:queryHint="Destination"

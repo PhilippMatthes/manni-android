@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Manni</string>
     <string name="expand_image">Expand Image</string>
+    <string name="start">Start</string>
+    <string name="destination">Destination</string>
+    <string name="travel">Travel</string>
+    <string name="walk">Walk</string>
+    <string name="info">Info</string>
+    <string name="duration">Duration</string>
 </resources>

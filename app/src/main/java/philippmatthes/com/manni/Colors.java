@@ -2,6 +2,8 @@ package philippmatthes.com.manni;
 
 import android.graphics.Color;
 
+import philippmatthes.com.manni.jVVO.Models.Route;
+
 public class Colors {
 
     private static final int[] colors = {
@@ -28,6 +30,20 @@ public class Colors {
         int green = (int) ((Color.green(color) * (1 - factor) / 255 + factor) * 255);
         int blue = (int) ((Color.blue(color) * (1 - factor) / 255 + factor) * 255);
         return Color.argb(Color.alpha(color), red, green, blue);
+    }
+
+    public static int color(Route.RoutePartial routePartial) {
+        int color;
+        try {
+            color = Colors.getColor(Integer.valueOf(routePartial.getMode().getName()));
+        } catch (NumberFormatException e) {
+            try {
+                color = Colors.getColor(routePartial.getMode().getName().length());
+            } catch (NullPointerException n) {
+                color = Colors.getColor(0);
+            }
+        }
+        return color;
     }
 
 }

@@ -22,13 +22,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/stop_list_view"
+        <ExpandableListView
+            android:id="@+id/expandable_routes_list_view"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        </ListView>
+        </ExpandableListView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tight_cell_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#888888">
+
+    <RelativeLayout
+        android:id="@+id/tight_cell_relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tight_cell_layout"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/button_anchor"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <ImageButton
+            android:id="@+id/tight_cell_image_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_toEndOf="@id/button_anchor"
+            android:src="@drawable/info"
+            style="?android:attr/borderlessButtonStyle"
+            android:tint="#ffffff"
+            android:contentDescription="@string/info" />
+
+        <TextView
+            android:id="@+id/tight_cell_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="58dp"
+            android:singleLine="true"
+            android:text="@string/start"
+            android:textAlignment="center"
+            android:textColor="#ffffff"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,20 +1,22 @@
 package philippmatthes.com.manni.jVVO.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
 public enum Mode {
-    tram ("tram"),
-    cityBus ("citybus"),
-    intercityBus ("intercitybus"),
-    suburbanRailway ("suburbanrailway"),
-    train ("train"),
-    cableway ("lift"),
-    ferry ("ferry"),
-    hailedSharedTaxi ("alita"),
-    footpath ("footpath"),
-    rapidTransit ("rapidtransit"),
+    @SerializedName("tram") tram ("tram"),
+    @SerializedName("citybus") cityBus ("citybus"),
+    @SerializedName("intercitybus") intercityBus ("intercitybus"),
+    @SerializedName("suburbanrailway") suburbanRailway ("suburbanrailway"),
+    @SerializedName("train") train ("train"),
+    @SerializedName("lift") cableway ("lift"),
+    @SerializedName("ferry") ferry ("ferry"),
+    @SerializedName("alita") hailedSharedTaxi ("alita"),
+    @SerializedName("footpath") footpath ("footpath"),
+    @SerializedName("rapidtransit") rapidTransit ("rapidtransit"),
     unknown ("unknown");
 
     private final String rawValue;

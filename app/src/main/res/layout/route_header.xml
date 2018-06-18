@@ -1,0 +1,21 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/route_header_lines_recycler_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/route_header_duration_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="@string/duration"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/route_header_lines_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/route_header_duration_text_view"
+        android:layout_marginLeft="30dp"/>
+
+</RelativeLayout>

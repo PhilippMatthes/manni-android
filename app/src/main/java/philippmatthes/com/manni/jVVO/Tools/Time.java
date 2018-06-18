@@ -17,4 +17,10 @@ public final class Time {
         dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
         return dateFormat.format(date);
     }
+
+    public static String formatDateNoDay(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
+        return dateFormat.format(date);
+    }
 }
