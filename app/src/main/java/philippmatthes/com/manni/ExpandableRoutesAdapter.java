@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -147,6 +148,15 @@ public class ExpandableRoutesAdapter extends BaseExpandableListAdapter {
 
         RecyclerView recyclerView = (RecyclerView) convertView
                 .findViewById(R.id.route_header_lines_recycler_view);
+
+        recyclerView.addOnItemTouchListener(new RecyclerView.SimpleOnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                // true: consume touch event
+                // false: dispatch touch event
+                return false;
+            }
+        });
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

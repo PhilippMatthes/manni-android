@@ -64,6 +64,18 @@ public class DeparturesActivity extends SpinnerActivity {
         setTitle(stopName);
     }
 
+    @Override
+    protected void startAnimatingSpinner() {
+        super.startAnimatingSpinner();
+        departureListView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    protected void stopAnimatingSpinner() {
+        super.stopAnimatingSpinner();
+        departureListView.setVisibility(View.VISIBLE);
+    }
+
     private void loadDepartures(String stopName) {
         startAnimatingSpinner();
 

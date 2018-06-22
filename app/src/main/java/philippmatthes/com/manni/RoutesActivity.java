@@ -76,6 +76,18 @@ public class RoutesActivity extends SpinnerActivity implements RouteRecycleViewA
         expandableListView.setAdapter(adapter);
     }
 
+    @Override
+    protected void startAnimatingSpinner() {
+        super.startAnimatingSpinner();
+        expandableListView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    protected void stopAnimatingSpinner() {
+        super.stopAnimatingSpinner();
+        expandableListView.setVisibility(View.VISIBLE);
+    }
+
     private void loadRoute(String from, String to) {
         startAnimatingSpinner();
 

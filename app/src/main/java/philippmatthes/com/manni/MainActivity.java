@@ -167,8 +167,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setDestinationSearchViewOpen(boolean open) {
         destinationSearchViewIsOpen = open;
-        destinationSearchLayout.animate().translationY(open ? 0 : -150);
-        stopListView.animate().translationY(open ? 0 : -150);
+        destinationSearchLayout.animate().translationY(open ? 0 : -startSearchView.getHeight());
+        stopListView.animate().translationY(open ? 0 : -startSearchView.getHeight());
         if (!open) startSearchView.setIconified(false);
     }
 
