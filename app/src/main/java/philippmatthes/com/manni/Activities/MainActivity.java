@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 import philippmatthes.com.manni.Colors;
 import philippmatthes.com.manni.R;
+import philippmatthes.com.manni.RouteChangeManager;
 import philippmatthes.com.manni.jVVO.Models.Stop;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void moveToDepartureActivity(String stopName) {
         Intent intent = new Intent(getApplicationContext(), DeparturesActivity.class);
-        intent.putExtra("stopName", stopName);
+        IntentHandler.setStopName(stopName);
         startActivity(intent);
     }
 
@@ -159,6 +160,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        RouteChangeManager.getShared().update(queue);
+
         configureContentView();
         configureStopListView();
         configureStartSearch();

@@ -1,6 +1,7 @@
 package philippmatthes.com.manni.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,37 +13,35 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import philippmatthes.com.manni.Activities.DeparturesActivity;
+import philippmatthes.com.manni.Activities.RouteChangeActivity;
 import philippmatthes.com.manni.Colors;
 import philippmatthes.com.manni.R;
+import philippmatthes.com.manni.RouteChangeManager;
 import philippmatthes.com.manni.jVVO.Models.Departure;
 import philippmatthes.com.manni.jVVO.Models.Platform;
 import philippmatthes.com.manni.jVVO.Tools.Time;
 
 public class DepartureAdapter extends ArrayAdapter<Departure> {
 
-    private final Context context;
     private final ArrayList<Departure> departures;
+    private final DeparturesActivity activity;
 
-    public DepartureAdapter(Context context, ArrayList<Departure> departures) {
+    public DepartureAdapter(DeparturesActivity activity, ArrayList<Departure> departures) {
 
-        super(context, R.layout.departure_row, departures);
-
-        this.context = context;
+        super(activity, R.layout.departure_row, departures);
+        this.activity = activity;
         this.departures = departures;
     }
 
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-        LayoutInflater inflater = (LayoutInflater) context
+        LayoutInflater inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View rowView;
-        if (parent != null) {
-            rowView = inflater.inflate(R.layout.departure_row, parent, false);
-        } else {
-            return null;
-        }
+        rowView = inflater.inflate(R.layout.departure_row, parent, false);
 
         TextView lineLabel = (TextView) rowView.findViewById(R.id.lineLabel);
         TextView arrivalTimeLabel = (TextView) rowView.findViewById(R.id.arrivalTimeLabel);
@@ -60,26 +59,12 @@ public class DepartureAdapter extends ArrayAdapter<Departure> {
         }
 
         String moreInformation = departure.getPlatform() != null ? "From Platform: " + departure.getPlatform().getName() : "";
-
-        /*
-        List<String> routeChanges = departure.getRouteChanges();
-
-        if (routeChanges != null) {
-            for (String change : routeChanges) {
-                if (moreInformation == "") {
-
-                    moreInformation += change;
-                } else {
-                    moreInformation += ", " + change;
-                }
-            }
+        if (departure.getRouteChanges() != null && !departure.getRouteChanges().isEmpty()) {
+            moreInformation += " Route changes: " + RouteChangeManager.getShared().changes(departure.getRouteChanges());
         }
-        */
 
         moreInformationLabel.setText(moreInformation);
         button.setText(departure.getLine());
-
-
 
         int color;
         try {

@@ -28,6 +28,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity" />
         </activity>
+        <activity
+            android:name=".Activities.RouteChangeActivity"
+            android:parentActivityName=".Activities.DeparturesActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Activities.DeparturesActivity" />
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

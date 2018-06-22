@@ -30,7 +30,7 @@ public class Departure implements Comparable<Departure> {
     @Getter @Setter @SerializedName("RealTime") private Date realTime;
     @NonNull @Getter @Setter @SerializedName("ScheduledTime") private Date scheduledTime;
     @Getter @Setter @SerializedName("State") private State state;
-    @Getter @Setter @SerializedName("RouteChanges") private List<String> routeChanges;
+    @Getter @Setter @SerializedName("RouteChanges") private ArrayList<String> routeChanges;
     @Getter @Setter @SerializedName("Diva") private Diva diva;
 
     public Integer getETA() {
