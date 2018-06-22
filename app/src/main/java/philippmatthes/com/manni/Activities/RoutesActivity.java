@@ -1,20 +1,19 @@
-package philippmatthes.com.manni;
+package philippmatthes.com.manni.Activities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import android.app.Activity;
-import android.app.ProgressDialog;
+
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import philippmatthes.com.manni.Adapters.ExpandableRoutesAdapter;
+import philippmatthes.com.manni.R;
+import philippmatthes.com.manni.Adapters.RouteRecycleViewAdapter;
 import philippmatthes.com.manni.jVVO.Models.Route;
 
 public class RoutesActivity extends SpinnerActivity implements RouteRecycleViewAdapter.ItemClickListener, ExpandableListView.OnGroupExpandListener {

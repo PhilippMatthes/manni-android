@@ -1,4 +1,4 @@
-package philippmatthes.com.manni;
+package philippmatthes.com.manni.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -8,10 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import java.util.List;
 
+import philippmatthes.com.manni.Colors;
+import philippmatthes.com.manni.R;
 import philippmatthes.com.manni.jVVO.Models.Route;
 
 public class RouteRecycleViewAdapter extends RecyclerView.Adapter<RouteRecycleViewAdapter.ViewHolder> {

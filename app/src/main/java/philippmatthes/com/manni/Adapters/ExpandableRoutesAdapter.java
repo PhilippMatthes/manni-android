@@ -1,12 +1,9 @@
-package philippmatthes.com.manni;
+package philippmatthes.com.manni.Adapters;
 
-import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,6 +15,8 @@ import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import philippmatthes.com.manni.Colors;
+import philippmatthes.com.manni.R;
 import philippmatthes.com.manni.jVVO.Models.Route;
 import philippmatthes.com.manni.jVVO.Tools.Time;
 

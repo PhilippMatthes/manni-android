@@ -1,4 +1,4 @@
-package philippmatthes.com.manni;
+package philippmatthes.com.manni.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import philippmatthes.com.manni.Colors;
+import philippmatthes.com.manni.R;
 import philippmatthes.com.manni.jVVO.Models.Departure;
 import philippmatthes.com.manni.jVVO.Models.Platform;
 import philippmatthes.com.manni.jVVO.Tools.Time;

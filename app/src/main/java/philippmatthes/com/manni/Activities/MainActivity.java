@@ -1,4 +1,4 @@
-package philippmatthes.com.manni;
+package philippmatthes.com.manni.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.support.v7.widget.SearchView;
@@ -23,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import philippmatthes.com.manni.Colors;
+import philippmatthes.com.manni.R;
 import philippmatthes.com.manni.jVVO.Models.Stop;
 
 public class MainActivity extends AppCompatActivity {

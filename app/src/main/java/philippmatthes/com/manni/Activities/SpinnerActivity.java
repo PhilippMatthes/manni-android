@@ -1,9 +1,11 @@
-package philippmatthes.com.manni;
+package philippmatthes.com.manni.Activities;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+
+import philippmatthes.com.manni.R;
 
 public class SpinnerActivity extends AppCompatActivity {
 

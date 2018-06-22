@@ -1,33 +1,19 @@
-package philippmatthes.com.manni;
+package philippmatthes.com.manni.Activities;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import philippmatthes.com.manni.Adapters.DepartureAdapter;
+import philippmatthes.com.manni.R;
 import philippmatthes.com.manni.jVVO.Models.Departure;
-import philippmatthes.com.manni.jVVO.Models.Route;
-import philippmatthes.com.manni.jVVO.Models.Stop;
 
 public class DeparturesActivity extends SpinnerActivity {
 
